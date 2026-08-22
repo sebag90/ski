@@ -1,8 +1,5 @@
 name: release
-on:
-  push:
-    branches: [main]
-    tags: ["v*"]
+on: workflow_dispatch
 
 jobs:
   container:
@@ -24,4 +21,4 @@ jobs:
           push: true
           tags: |
             ghcr.io/sebag90/ski:latest
-            ghcr.io/sebag90/ski:${{ github.ref_name }}
+            ghcr.io/sebag90/ski:${{ github.sha }}
