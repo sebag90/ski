@@ -7,7 +7,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230969da'/%3E%3Cpath d='M6 50 26 16 40 40 47 29 58 50Z' fill='%23fff'/%3E%3Cpath d='M20 26h12l-6-10zM43 35h8l-4-6z' fill='%23bcd8f7'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
-  :root { --bg:#f6f8fa; --card:#ffffff; --line:#d0d7de; --ink:#1f2328; --dim:#656d76; --accent:#0969da; --pin:#7c3aed; }
+  :root { --bg:#f6f8fa; --card:#ffffff; --line:#d0d7de; --ink:#1f2328; --dim:#656d76; --accent:#0969da; --pin:#0e7490; }
   * { box-sizing:border-box }
   html,body { margin:0; height:100%; font:15px/1.5 system-ui,sans-serif; background:var(--bg); color:var(--ink) }
   #map { position:absolute; inset:0 }
@@ -32,16 +32,21 @@
   .price { color:#1a7f37; white-space:nowrap; font-variant-numeric:tabular-nums }
   .total { margin-top:10px; padding-top:8px; border-top:2px solid var(--line); display:flex; justify-content:space-between; font-weight:600 }
   .dim { color:var(--dim); white-space:nowrap }
-  /* sewing-pin marker: price tag on top, thin needle, dot at the exact spot */
-  .pin { display:flex; flex-direction:column; align-items:center; height:100% }
-  .tag {
-    background:var(--pin); color:#fff; font-size:12px; font-weight:700; line-height:1;
-    padding:5px 8px; border-radius:6px; border:2px solid #fff; white-space:nowrap;
-    box-shadow:0 2px 6px rgba(31,35,40,.4); transform-origin:bottom center; transition:transform .12s;
+  /* round skier markers, centered on the coordinate, price pill underneath */
+  .pin {
+    position:relative; width:100%; height:100%; border-radius:50%; background:#fff;
+    display:grid; place-items:center; font-size:24px; line-height:1; cursor:pointer;
+    box-shadow:0 0 0 3px var(--pin), 0 3px 10px rgba(31,35,40,.35);
+    transition:transform .14s ease-out;
   }
-  .needle { flex:1; width:2px; background:var(--pin) }
-  .dot { width:8px; height:8px; margin-top:-1px; border-radius:50%; background:var(--pin); box-shadow:0 0 0 2px #fff }
-  .leaflet-marker-icon:hover .tag { transform:scale(1.12) }
+  .cap {
+    position:absolute; top:calc(100% + 4px); left:50%; transform:translateX(-50%);
+    background:var(--pin); color:#fff; font-size:13.5px; font-weight:700; line-height:1;
+    padding:5px 9px; border-radius:999px; white-space:nowrap;
+    box-shadow:0 1px 5px rgba(31,35,40,.35), 0 0 0 2px rgba(255,255,255,.95);
+  }
+  .leaflet-marker-icon:hover { z-index:600 !important }
+  .leaflet-marker-icon:hover .pin { transform:scale(1.12) }
 </style>
 </head>
 <body>
@@ -128,13 +133,13 @@ const popup = (o) => `
   <div class="row"><span>🚗 Drive from Santiago</span><span class="dim">${o.drive}</span></div>
   <div class="total"><span>Cheapest total / person</span><span class="price">~${o.total} €</span></div>`;
 
-// marker height: tag (~26px) + needle + dot; anchored on the dot at the bottom
-const H = 52;
+// circle marker: one size knob, anchored dead center on the coordinate
+const S = 44;
 const markers = OPTIONS.map(o =>
   L.marker(o.coords, {
     icon: L.divIcon({
-      className: "", iconSize: [64, H], iconAnchor: [32, H], popupAnchor: [0, -H],
-      html: `<div class="pin"><div class="tag">${o.total}€</div><div class="needle"></div><div class="dot"></div></div>`
+      className: "", iconSize: [S, S], iconAnchor: [S / 2, S / 2], popupAnchor: [0, -S / 2 - 2],
+      html: `<div class="pin">⛷️<span class="cap">${o.total}€</span></div>`
     }),
     title: o.name
   }).bindPopup(popup(o)).addTo(map)
