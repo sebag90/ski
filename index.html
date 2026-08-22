@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ski Vacation Options</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230969da'/%3E%3Cpath d='M6 50 26 16 40 40 47 29 58 50Z' fill='%23fff'/%3E%3Cpath d='M20 26h12l-6-10zM43 35h8l-4-6z' fill='%23bcd8f7'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  :root { --bg:#f6f8fa; --card:#ffffff; --line:#d0d7de; --ink:#1f2328; --dim:#656d76; --accent:#0969da; }
+  * { box-sizing:border-box }
+  html,body { margin:0; height:100%; font:15px/1.5 system-ui,sans-serif; background:var(--bg); color:var(--ink) }
+  #map { position:absolute; inset:0 }
+  header {
+    position:absolute; z-index:500; top:14px; left:14px; padding:10px 16px;
+    background:rgba(255,255,255,.9); border:1px solid var(--line); border-radius:10px;
+    backdrop-filter:blur(6px);
+  }
+  header h1 { margin:0; font-size:17px; letter-spacing:.3px }
+  header p { margin:2px 0 0; font-size:12px; color:var(--dim) }
+  .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+    background:var(--card); color:var(--ink); border:1px solid var(--line);
+    border-radius:12px; box-shadow:0 10px 30px rgba(31,35,40,.25);
+  }
+  .leaflet-popup-content { margin:14px 16px; width:280px !important }
+  .leaflet-popup-close-button { color:var(--dim) !important }
+  .p-name { font-size:17px; font-weight:600; margin:0 0 2px }
+  .p-note { font-size:12px; color:var(--dim); margin:0 0 10px }
+  .row { display:flex; justify-content:space-between; gap:10px; padding:6px 0; border-top:1px solid var(--line) }
+  .row a, .p-note a { color:var(--accent); text-decoration:none }
+  .row a:hover { text-decoration:underline }
+  .price { color:#1a7f37; white-space:nowrap; font-variant-numeric:tabular-nums }
+  .total { margin-top:10px; padding-top:8px; border-top:2px solid var(--line); display:flex; justify-content:space-between; font-weight:600 }
+  .dim { color:var(--dim); white-space:nowrap }
+  .pin {
+    width:30px; height:30px; border-radius:50% 50% 50% 0; transform:rotate(-45deg);
+    background:var(--accent); border:2px solid #fff; box-shadow:0 3px 8px rgba(31,35,40,.35);
+    display:grid; place-items:center;
+  }
+  .pin span { transform:rotate(45deg); font-size:10px; font-weight:700; color:#fff }
+</style>
+</head>
+<body>
+<header>
+  <h1>🎿 Ski Vacation Options</h1>
+  <p>Click a pin — prices per person (4 people), flat split 4 ways + skipass</p>
+</header>
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// Prices in € PER PERSON (4 people): flat split by 4, skipass as-is.
+const OPTIONS = [
+  {
+    name: "Sainte Foy", coords: [45.5872, 6.8836], total: 620, drive: "~1960 km · 20h",
+    note: "Skipass dynamic pricing — budgeting the worst case, 270€. Flat ~1400€ total.",
+    items: [
+      { label: "Chalet Bella Comba – Le Monal", price: "~350", url: "https://www.saintefoy-reservation.com/fr/hebergements/chalet-bella-comba-le-monal/" },
+      { label: "Skipass", price: "270", url: "https://www.saintefoy-tarentaise.com/a-faire/activites-hiver/ski-et-snowboard/forfaits-de-ski/" }
+    ]
+  },
+  {
+    name: "Valloire", coords: [45.1650, 6.4290], total: 445, drive: "~1930 km · 19h30",
+    note: "Two flats. Prices include ~100€ cleaning, then split by 4 (942€ / 1188€ total).",
+    items: [
+      { label: "3 rooms – L'Orée des Pistes n°5", price: "236", url: "https://en.valloire.com/3-rooms-l-oree-des-pistes-n-5.html" },
+      { label: "3 rooms mezzanine – Chalets du Galibier I B37", price: "297", url: "https://en.valloire.com/3-rooms-mezzanine-chalets-du-galibier-i-b37.html" },
+      { label: "Skipass", price: "209", url: null },
+      { label: "Piste map (PDF)", price: "", url: "https://static.valloire.net/app/uploads/2025/11/valmeinier-valloire-hiver-2025-2026-v7-hd.pdf" }
+    ]
+  },
+  {
+    name: "Arêches-Beaufort", coords: [45.6881, 6.5624], total: 409, drive: "~1900 km · 19h",
+    note: "Highest peak only 2300 m. Chalet 780€ total.",
+    items: [
+      { label: "Chalet Les Gentianes", price: "195", url: "https://reservation.areches-beaufort.com/les-gentianes-1.html" },
+      { label: "Skipass", price: "214", url: null },
+      { label: "Piste map", price: "", url: "https://en.areches-beaufort.com/to-do/all-the-slides/Alpine-skiing/" }
+    ]
+  },
+  {
+    name: "La Norma", coords: [45.2014, 6.6970], total: 508, drive: "~1920 km · 19h15",
+    note: "Biggest flat of the bunch: 90 m². ~1150€ total.",
+    items: [
+      { label: "Flat APT04 · 90 m²", price: "~288", url: "https://la-norma-valfrejus.locvacances.com/en-GB/Lot/Detail" },
+      { label: "Skipass", price: "220", url: "https://www.la-norma.ski/en/ski-passes-prices/" },
+      { label: "Piste map", price: "", url: "https://www.la-norma.ski/en/ski-map/" }
+    ]
+  },
+  {
+    name: "Bonneval-sur-Arc", coords: [45.3733, 7.0483], total: 460, drive: "~1980 km · 20h30",
+    note: "Flat 90 m² (1067€ total), dates 02-01-2027 → 09-01-2027.",
+    items: [
+      { label: "La Benna · 90 m²", price: "267", url: "https://booking.haute-maurienne-vanoise.com/dp80-la-benna-bonneval-sur-arc/MARK-63868-BENNA1*282mon?DateRecherche=2027-01-02|2027-01-09" },
+      { label: "Skipass", price: "193", url: null },
+      { label: "Live piste openings", price: "", url: "https://live.lumiplan.pro/bonnevalsurarc.php?resort=bonnevalsurarc&module=ouvertures" }
+    ]
+  }
+];
+
+const map = L.map("map", { scrollWheelZoom: true });
+map.zoomControl.setPosition("bottomleft");
+const base = {
+  "OpenStreetMap": L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', maxZoom: 19
+  }).addTo(map),
+  "Terrain (OpenTopoMap)": L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
+    attribution: '&copy; OpenStreetMap, SRTM | &copy; <a href="https://opentopomap.org">OpenTopoMap</a>', maxZoom: 17
+  })
+};
+const pistes = L.tileLayer("https://tiles.opensnowmap.org/pistes/{z}/{x}/{y}.png", {
+  attribution: '&copy; <a href="https://www.opensnowmap.org">OpenSnowMap</a>', maxZoom: 18, opacity: .9
+}).addTo(map);
+L.control.layers(base, { "Pistes & lifts": pistes }, { collapsed: false }).addTo(map);
+
+const link = (i) => i.url
+  ? `<a href="${i.url}" target="_blank" rel="noopener">${i.label} ↗</a>`
+  : `<span>${i.label}</span>`;
+
+const popup = (o) => `
+  <p class="p-name">${o.name}</p>
+  <p class="p-note">${o.note}</p>
+  ${o.items.map(i => `<div class="row">${link(i)}<span class="price">${i.price ? i.price + " €" : ""}</span></div>`).join("")}
+  <div class="row"><span>🚗 Drive from Santiago</span><span class="dim">${o.drive}</span></div>
+  <div class="total"><span>Cheapest total / person</span><span class="price">~${o.total} €</span></div>`;
+
+const markers = OPTIONS.map(o =>
+  L.marker(o.coords, {
+    icon: L.divIcon({
+      // tip of the rotated teardrop sits at 15 + 15*sqrt(2) ≈ 36px, not at the box bottom
+      className: "", iconSize: [30, 30], iconAnchor: [15, 36], popupAnchor: [0, -36],
+      html: `<div class="pin"><span>${o.total}€</span></div>`
+    }),
+    title: o.name
+  }).bindPopup(popup(o)).addTo(map)
+);
+
+map.fitBounds(L.featureGroup(markers).getBounds().pad(0.25));
+</script>
+</body>
+</html>
