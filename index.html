@@ -61,15 +61,26 @@
 // Prices in € PER PERSON (4 people): flat split by 4, skipass as-is.
 const OPTIONS = [
   {
-    name: "Sainte Foy", coords: [45.5872, 6.8836], total: 620, drive: "~1960 km · 20h",
-    note: "Skipass dynamic pricing — budgeting the worst case, 270€. Flat ~1400€ total.",
+    name: "Les Karellis", coords: [45.2059, 6.4192], total: 441, drive: "~1672 km",
+    note: "No supermarket or boulangerie in the village",
     items: [
-      { label: "Chalet Bella Comba – Le Monal", price: "~350", url: "https://www.saintefoy-reservation.com/fr/hebergements/chalet-bella-comba-le-monal/" },
-      { label: "Skipass", price: "270", url: "https://www.saintefoy-tarentaise.com/a-faire/activites-hiver/ski-et-snowboard/forfaits-de-ski/" }
+      {label: "Le lagopede", price: "~174", url: "https://www.gites-de-france-savoie.com/Hebergements/gite/le-lagopede-73G173116.html?&insee=73173"},
+      {label: "Gite de L'ours", price: "208", url: "https://www.gites-de-france-savoie.com/Hebergements/gite/le-gite-de-l-ours-73G173117.html?&insee=73173"},
+      {label: "Skipass", price: "191", url: "https://www.leskarellis.com/fr/tarifs-2026-2027-sans-lien"},
+      {label: "Piste MAP", price: "", url: "https://www.karellis.com/wp-content/uploads/Plan-des-pistes-2023-compresse.pdf"}
     ]
   },
   {
-    name: "Valloire", coords: [45.1650, 6.4290], total: 445, drive: "~1930 km · 19h30",
+    name: "Sainte Foy", coords: [45.5767, 6.8942], total: 620, drive: "~1701 km",
+    note: "Skipass dynamic pricing — budgeting the worst case, 270€. Flat ~1400€ total.",
+    items: [
+      { label: "Chalet Bella Comba – Le Monal", price: "~350", url: "https://www.saintefoy-reservation.com/fr/hebergements/chalet-bella-comba-le-monal/" },
+      { label: "Skipass", price: "270", url: "https://www.saintefoy-tarentaise.com/a-faire/activites-hiver/ski-et-snowboard/forfaits-de-ski/" },
+      {label: "Piste", price: "", url: "https://woody.cloudly.space/app/uploads/saintefoy-tarentaise/2024/09/thumbs/skimap-1920x1487.webp"}
+    ]
+  },
+  {
+    name: "Valloire", coords: [45.1650, 6.4290], total: 445, drive: "~1683 km",
     note: "Two flats. Prices include ~100€ cleaning, then split by 4 (942€ / 1188€ total).",
     items: [
       { label: "3 rooms – L'Orée des Pistes n°5", price: "236", url: "https://en.valloire.com/3-rooms-l-oree-des-pistes-n-5.html" },
@@ -79,7 +90,7 @@ const OPTIONS = [
     ]
   },
   {
-    name: "Arêches-Beaufort", coords: [45.6881, 6.5624], total: 409, drive: "~1900 km · 19h",
+    name: "Arêches-Beaufort", coords: [45.6881, 6.5624], total: 409, drive: "~1655 km",
     note: "Highest peak only 2300 m. Chalet 780€ total.",
     items: [
       { label: "Chalet Les Gentianes", price: "195", url: "https://reservation.areches-beaufort.com/les-gentianes-1.html" },
@@ -88,7 +99,7 @@ const OPTIONS = [
     ]
   },
   {
-    name: "La Norma", coords: [45.2014, 6.6970], total: 508, drive: "~1920 km · 19h15",
+    name: "La Norma", coords: [45.2014, 6.6970], total: 508, drive: "~1686 km",
     note: "Biggest flat of the bunch: 90 m². ~1150€ total.",
     items: [
       { label: "Flat APT04 · 90 m²", price: "~288", url: "https://la-norma-valfrejus.locvacances.com/en-GB/Lot/Detail" },
@@ -97,7 +108,7 @@ const OPTIONS = [
     ]
   },
   {
-    name: "Bonneval-sur-Arc", coords: [45.3733, 7.0483], total: 460, drive: "~1980 km · 20h30",
+    name: "Bonneval-sur-Arc", coords: [45.3733, 7.0483], total: 460, drive: "~1723 km",
     note: "Flat 90 m² (1067€ total), dates 02-01-2027 → 09-01-2027.",
     items: [
       { label: "La Benna · 90 m²", price: "267", url: "https://booking.haute-maurienne-vanoise.com/dp80-la-benna-bonneval-sur-arc/MARK-63868-BENNA1*282mon?DateRecherche=2027-01-02|2027-01-09" },
@@ -106,7 +117,7 @@ const OPTIONS = [
     ]
   },
   {
-    name: "Aussois", coords: [45.2275, 6.7414], total: 435, drive: "~1920 km · 19h15",
+    name: "Aussois", coords: [45.2275, 6.7414], total: 435, drive: "~1688 km",
     note: "Le Chamois, up to 6 pers. Flat 890€ total.",
     items: [
       { label: "Le Chamois · 6 pers. max", price: "223", url: "https://www.aussois.com/en/meuble-reservable/le-chamois-6-pers-max/" },
@@ -115,7 +126,7 @@ const OPTIONS = [
     ]
   },
   {
-    name: "La Rosière", coords: [45.6286, 6.8478], total: 581, drive: "~1970 km · 20h",
+    name: "La Rosière", coords: [45.6286, 6.8478], total: 581, drive: "~1705 km · 20h",
     note: "Priciest skipass — but it is Espace San Bernardo, ski over to La Thuile (IT). Chalet 1120€ total.",
     items: [
       { label: "3-bedroom chalet · 6 pers.", price: "280", url: "https://booking.larosiere.net/3-bedrooms-chalet-6-people-jean-jacques-fourn-bari2.html" },
