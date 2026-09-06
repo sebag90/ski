@@ -4,208 +4,701 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ski Vacation Options</title>
+
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230969da'/%3E%3Cpath d='M6 50 26 16 40 40 47 29 58 50Z' fill='%23fff'/%3E%3Cpath d='M20 26h12l-6-10zM43 35h8l-4-6z' fill='%23bcd8f7'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
 <style>
-  :root { --bg:#f6f8fa; --card:#ffffff; --line:#d0d7de; --ink:#1f2328; --dim:#656d76; --accent:#0969da; --pin:#cc5a97; }
-  * { box-sizing:border-box }
-  html,body { margin:0; height:100%; font:15px/1.5 system-ui,sans-serif; background:var(--bg); color:var(--ink) }
-  #map { position:absolute; inset:0 }
+  :root {
+    --bg: #f6f8fa;
+    --card: #ffffff;
+    --line: #d0d7de;
+    --ink: #1f2328;
+    --dim: #656d76;
+    --accent: #0969da;
+    --pin: #cc5a97;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    margin: 0;
+    height: 100%;
+    font: 15px/1.5 system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+  }
+
+  #map {
+    position: absolute;
+    inset: 0;
+  }
+
   header {
-    position:absolute; z-index:500; top:14px; left:14px; padding:10px 16px;
-    background:rgba(255,255,255,.9); border:1px solid var(--line); border-radius:10px;
-    backdrop-filter:blur(6px);
+    position: absolute;
+    z-index: 500;
+    top: 14px;
+    left: 14px;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    backdrop-filter: blur(6px);
   }
-  header h1 { margin:0; font-size:17px; letter-spacing:.3px }
-  header p { margin:2px 0 0; font-size:12px; color:var(--dim) }
-  .leaflet-popup-content-wrapper, .leaflet-popup-tip {
-    background:var(--card); color:var(--ink); border:1px solid var(--line);
-    border-radius:12px; box-shadow:0 10px 30px rgba(31,35,40,.25);
+
+  header h1 {
+    margin: 0;
+    font-size: 17px;
+    letter-spacing: 0.3px;
   }
-  .leaflet-popup-content { margin:14px 16px; width:280px !important }
-  .leaflet-popup-close-button { color:var(--dim) !important }
-  .p-name { font-size:17px; font-weight:600; margin:0 0 2px }
-  .p-note { font-size:12px; color:var(--dim); margin:0 0 10px }
-  .row { display:flex; justify-content:space-between; gap:10px; padding:6px 0; border-top:1px solid var(--line) }
-  .row a, .p-note a { color:var(--accent); text-decoration:none }
-  .row a:hover { text-decoration:underline }
-  .price { color:#1a7f37; white-space:nowrap; font-variant-numeric:tabular-nums }
-  .total { margin-top:10px; padding-top:8px; border-top:2px solid var(--line); display:flex; justify-content:space-between; font-weight:600 }
-  .dim { color:var(--dim); white-space:nowrap }
-  /* round skier markers, centered on the coordinate, price pill underneath */
+
+  header p {
+    margin: 2px 0 0;
+    font-size: 12px;
+    color: var(--dim);
+  }
+
+  .leaflet-popup-content-wrapper,
+  .leaflet-popup-tip {
+    background: var(--card);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(31, 35, 40, 0.25);
+  }
+
+  .leaflet-popup-content {
+    margin: 14px 16px;
+    width: 280px !important;
+  }
+
+  .leaflet-popup-close-button {
+    color: var(--dim) !important;
+  }
+
+  .p-name {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0 0 2px;
+  }
+
+  .p-note {
+    font-size: 12px;
+    color: var(--dim);
+    margin: 0 0 10px;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 6px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .row a,
+  .p-note a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .row a:hover {
+    text-decoration: underline;
+  }
+
+  .price {
+    color: #1a7f37;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .total {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 2px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+  }
+
+  .dim {
+    color: var(--dim);
+    white-space: nowrap;
+  }
+
+  /* Google Maps directions button */
+  .directions {
+    display: block;
+    width: 100%;
+    padding: 8px 10px;
+    background: var(--accent);
+    color: #fff !important;
+    text-align: center;
+    border-radius: 7px;
+    font-weight: 600;
+    text-decoration: none !important;
+  }
+
+  .directions:hover {
+    opacity: 0.9;
+    text-decoration: none !important;
+  }
+
+  /* Round skier markers, centered on the coordinate,
+     price pill underneath */
   .pin {
-    position:relative; width:100%; height:100%; border-radius:50%; background:#fff;
-    display:grid; place-items:center; font-size:24px; line-height:1; cursor:pointer;
-    box-shadow:0 0 0 3px var(--pin), 0 3px 10px rgba(31,35,40,.35);
-    transition:transform .14s ease-out;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow:
+      0 0 0 3px var(--pin),
+      0 3px 10px rgba(31, 35, 40, 0.35);
+    transition: transform 0.14s ease-out;
   }
+
   .cap {
-    position:absolute; top:calc(100% + 4px); left:50%; transform:translateX(-50%);
-    background:var(--pin); color:#fff; font-size:13.5px; font-weight:700; line-height:1;
-    padding:5px 9px; border-radius:999px; white-space:nowrap;
-    box-shadow:0 1px 5px rgba(31,35,40,.35), 0 0 0 2px rgba(255,255,255,.95);
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--pin);
+    color: #fff;
+    font-size: 13.5px;
+    font-weight: 700;
+    line-height: 1;
+    padding: 5px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+    box-shadow:
+      0 1px 5px rgba(31, 35, 40, 0.35),
+      0 0 0 2px rgba(255, 255, 255, 0.95);
   }
-  .leaflet-marker-icon:hover { z-index:600 !important }
-  .leaflet-marker-icon:hover .pin { transform:scale(1.12) }
+
+  .leaflet-marker-icon:hover {
+    z-index: 600 !important;
+  }
+
+  .leaflet-marker-icon:hover .pin {
+    transform: scale(1.12);
+  }
 </style>
 </head>
+
 <body>
+
 <header>
   <h1>🎿 Ski Vacation Options</h1>
-  <p>Click a pin — prices per person (4 people), flat split 4 ways + skipass</p>
+  <p>
+    Click a pin — prices per person (4 people), flat split 4 ways + skipass
+  </p>
 </header>
+
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <script>
-// Prices in € PER PERSON (4 people): flat split by 4, skipass as-is.
+// Prices in € PER PERSON (4 people):
+// accommodation split by 4, skipass as-is.
+// Driving distance is intentionally NOT included;
+// use the Google Maps button in each popup to choose your starting point.
+
 const OPTIONS = [
   {
-    name: "Puy Saint Vincent", coords: [44.8195, 6.4885], total: 422 , drive: "~1628 km",
+    name: "Puy Saint Vincent",
+    coords: [44.8195, 6.4885],
+    total: 422,
     note: "",
     items: [
-      {label: "Gîte La Bergerie", price: "~213", url: "https://www.gites-de-france-hautes-alpes.com/location-vacances-Gite-La-Bergerie-a-Puy-saint-vincent-05G9445.html?insee=05110&&deb=16/01/2027&fin=23/01/2027&exe=2027&reload=true"},
-      {label: "Skipass", price: "209", url: "https://www.puysaintvincent.com/forfait-ski-puy-saint-vincent?type=48&viewsreference[compressed]=eJxlkMEOgkAMRP-lZw6YaFR-xZhNdbtrk7KQpZAQwr-7CyKJHnqYeTNz6AQWFaGaQLhmhSr0IgVg9H1N4atb9BQ3oaxCm2ic6-iTmwuggA8ha5KnHHwH1e2e6zGNmXSso9GxTfVsoo_YvuA3wDbhy_HPFwz-2dhcdnGnjkmsCVgvYBFDTzuPNHDHTVh3D-Xpei4TXZOsVBtLkp9Qzm9RfF_X"},
-      {label: "Piste MAP", price: "", url: "https://lumiplay.link/interactive-map/Puy-Saint-Vincent/fr?uuid=0"}
+      {
+        label: "Gîte La Bergerie",
+        price: "~213",
+        url: "https://www.gites-de-france-hautes-alpes.com/location-vacances-Gite-La-Bergerie-a-Puy-saint-vincent-05G9445.html?insee=05110&deb=16/01/2027&fin=23/01/2027&exe=2027&reload=true"
+      },
+      {
+        label: "Skipass",
+        price: "209",
+        url: "https://www.puysaintvincent.com/forfait-ski-puy-saint-vincent?type=48"
+      },
+      {
+        label: "Piste MAP",
+        price: "",
+        url: "https://lumiplay.link/interactive-map/Puy-Saint-Vincent/fr?uuid=0"
+      }
     ]
   },
+
   {
-    name: "Le Orcieres", coords: [44.6941, 6.3208], total: 487 , drive: "~1587 km",
+    name: "Le Orcieres",
+    coords: [44.6941, 6.3208],
+    total: 487,
     note: "",
     items: [
-      {label: "le chamois", price: "~221", url: "https://reservation.orcieres.com/appartement-3-pieces-6-personnes-le-chamois-entree-n5.html?&cid=2&action=result&resa_action=result"},
-      {label: "le queyrelet", price: "~259", url: "https://reservation.orcieres.com/appartement-3-pieces-le-queyrelet-2-6-personnes.html?&cid=2&action=result&resa_action=result"},
-      {label: "chalet le baptiste (400m des pistes)", price: "~210", url: "https://reservation.orcieres.com/chalet-le-baptiste-haut-4-pieces-8-personnes.html?&cid=2&action=result&resa_action=result"},
-      {label: "chalet les 3 flocons", price: "~313", url: "https://reservation.orcieres.com/chalet-les-3-flocons-4-pieces-6-personnes.html?&cid=2&action=result&resa_action=result"},
-      {label: "Skipass", price: "227", url: "https://pass.orcieres.com/fr/billetterie?filter=ski"},
-      {label: "Piste MAP", price: "", url: "https://www.orcieres.com/activites/hiver/ski/domaine-skiable/plan-des-pistes/"}
+      {
+        label: "Le Chamois",
+        price: "~221",
+        url: "https://reservation.orcieres.com/appartement-3-pieces-6-personnes-le-chamois-entree-n5.html?&cid=2&action=result&resa_action=result"
+      },
+      {
+        label: "Le Queyrelet",
+        price: "~259",
+        url: "https://reservation.orcieres.com/appartement-3-pieces-le-queyrelet-2-6-personnes.html?&cid=2&action=result&resa_action=result"
+      },
+      {
+        label: "Chalet Le Baptiste (400m des pistes)",
+        price: "~210",
+        url: "https://reservation.orcieres.com/chalet-le-baptiste-haut-4-pieces-8-personnes.html?&cid=2&action=result&resa_action=result"
+      },
+      {
+        label: "Chalet Les 3 Flocons",
+        price: "~313",
+        url: "https://reservation.orcieres.com/chalet-les-3-flocons-4-pieces-6-personnes.html?&cid=2&action=result&resa_action=result"
+      },
+      {
+        label: "Skipass",
+        price: "227",
+        url: "https://pass.orcieres.com/fr/billetterie?filter=ski"
+      },
+      {
+        label: "Piste MAP",
+        price: "",
+        url: "https://www.orcieres.com/activites/hiver/ski/domaine-skiable/plan-des-pistes/"
+      }
     ]
   },
+
   {
-    name: "Les Orres", coords: [44.4933, 6.5558], total: 554 , drive: "~1589 km",
+    name: "Les Orres",
+    coords: [44.4933, 6.5558],
+    total: 554,
     note: "Herrenhaus (bus oder auto) oder residence",
     items: [
-      {label: "La Meleziere (herrenhaus)", price: "~315", url: "https://www.gites-de-france.com/fr/provence-alpes-cote-dazur/hautes-alpes/la-meleziere-les-cimes-05g6516?from=2027-01-16&to=2027-01-23&adults=4&children=0&infants=0"},
-      {label: "le belvedere", price: "267", url: "https://reservation.lesorres.com/centre-station-1650/601-le-belvedere-4-pieces-10-personnes-ouest-1bel601.html?&cid=2&action=result&resa_action=result"},
-      {label: "Skipass", price: "239", url: "https://www.lesorres.com/skier-aux-orres/le-domaine-skiable/les-forfaits-de-ski"},
-      {label: "Piste MAP", price: "", url: "https://www.lesorres.com/sites/default/files/documents/plan-des-pistes-les-orres-2025-26-complet-bd.pdf"}
+      {
+        label: "La Meleziere (Herrenhaus)",
+        price: "~315",
+        url: "https://www.gites-de-france.com/fr/provence-alpes-cote-dazur/hautes-alpes/la-meleziere-les-cimes-05g6516?from=2027-01-16&to=2027-01-23&adults=4&children=0&infants=0"
+      },
+      {
+        label: "Le Belvedere",
+        price: "267",
+        url: "https://reservation.lesorres.com/centre-station-1650/601-le-belvedere-4-pieces-10-personnes-ouest-1bel601.html?&cid=2&action=result&resa_action=result"
+      },
+      {
+        label: "Skipass",
+        price: "239",
+        url: "https://www.lesorres.com/skier-aux-orres/le-domaine-skiable/les-forfaits-de-ski"
+      },
+      {
+        label: "Piste MAP",
+        price: "",
+        url: "https://www.lesorres.com/sites/default/files/documents/plan-des-pistes-les-orres-2025-26-complet-bd.pdf"
+      }
     ]
   },
+
   {
-    name: "Les Karellis", coords: [45.2059, 6.4192], total: 441, drive: "~1672 km",
+    name: "Les Karellis",
+    coords: [45.2059, 6.4192],
+    total: 441,
     note: "No supermarket or boulangerie in the village",
     items: [
-      {label: "Le lagopede", price: "~174", url: "https://www.gites-de-france-savoie.com/Hebergements/gite/le-lagopede-73G173116.html?&insee=73173"},
-      {label: "Gite de L'ours", price: "208", url: "https://www.gites-de-france-savoie.com/Hebergements/gite/le-gite-de-l-ours-73G173117.html?&insee=73173"},
-      {label: "Skipass", price: "191", url: "https://www.leskarellis.com/fr/tarifs-2026-2027-sans-lien"},
-      {label: "Piste MAP", price: "", url: "https://www.karellis.com/wp-content/uploads/Plan-des-pistes-2023-compresse.pdf"}
+      {
+        label: "Le Lagopede",
+        price: "~174",
+        url: "https://www.gites-de-france-savoie.com/Hebergements/gite/le-lagopede-73G173116.html?&insee=73173"
+      },
+      {
+        label: "Gite de L'ours",
+        price: "208",
+        url: "https://www.gites-de-france-savoie.com/Hebergements/gite/le-gite-de-l-ours-73G173117.html?&insee=73173"
+      },
+      {
+        label: "Skipass",
+        price: "191",
+        url: "https://www.leskarellis.com/fr/tarifs-2026-2027-sans-lien"
+      },
+      {
+        label: "Piste MAP",
+        price: "",
+        url: "https://www.karellis.com/wp-content/uploads/Plan-des-pistes-2023-compresse.pdf"
+      }
     ]
   },
+
   {
-    name: "Sainte Foy", coords: [45.5767, 6.8942], total: 620, drive: "~1701 km",
+    name: "Sainte Foy",
+    coords: [45.5767, 6.8942],
+    total: 620,
     note: "Skipass dynamic pricing — budgeting the worst case, 270€. Flat ~1400€ total.",
     items: [
-      { label: "Chalet Bella Comba – Le Monal", price: "~350", url: "https://www.saintefoy-reservation.com/fr/hebergements/chalet-bella-comba-le-monal/" },
-      { label: "Skipass", price: "270", url: "https://www.saintefoy-tarentaise.com/a-faire/activites-hiver/ski-et-snowboard/forfaits-de-ski/" },
-      {label: "Piste", price: "", url: "https://woody.cloudly.space/app/uploads/saintefoy-tarentaise/2024/09/thumbs/skimap-1920x1487.webp"}
+      {
+        label: "Chalet Bella Comba – Le Monal",
+        price: "~350",
+        url: "https://www.saintefoy-reservation.com/fr/hebergements/chalet-bella-comba-le-monal/"
+      },
+      {
+        label: "Skipass",
+        price: "270",
+        url: "https://www.saintefoy-tarentaise.com/a-faire/activites-hiver/ski-et-snowboard/forfaits-de-ski/"
+      },
+      {
+        label: "Piste",
+        price: "",
+        url: "https://woody.cloudly.space/app/uploads/saintefoy-tarentaise/2024/09/thumbs/skimap-1920x1487.webp"
+      }
     ]
   },
+
   {
-    name: "Valloire", coords: [45.1650, 6.4290], total: 445, drive: "~1683 km",
+    name: "Valloire",
+    coords: [45.1650, 6.4290],
+    total: 445,
     note: "Two flats. Prices include ~100€ cleaning, then split by 4 (942€ / 1188€ total).",
     items: [
-      { label: "3 rooms – L'Orée des Pistes n°5", price: "236", url: "https://en.valloire.com/3-rooms-l-oree-des-pistes-n-5.html" },
-      { label: "3 rooms mezzanine – Chalets du Galibier I B37", price: "297", url: "https://en.valloire.com/3-rooms-mezzanine-chalets-du-galibier-i-b37.html" },
-      { label: "Skipass", price: "209", url: null },
-      { label: "Piste map (PDF)", price: "", url: "https://static.valloire.net/app/uploads/2025/11/valmeinier-valloire-hiver-2025-2026-v7-hd.pdf" }
+      {
+        label: "3 rooms – L'Orée des Pistes n°5",
+        price: "236",
+        url: "https://en.valloire.com/3-rooms-l-oree-des-pistes-n-5.html"
+      },
+      {
+        label: "3 rooms mezzanine – Chalets du Galibier I B37",
+        price: "297",
+        url: "https://en.valloire.com/3-rooms-mezzanine-chalets-du-galibier-i-b37.html"
+      },
+      {
+        label: "Skipass",
+        price: "209",
+        url: null
+      },
+      {
+        label: "Piste map (PDF)",
+        price: "",
+        url: "https://static.valloire.net/app/uploads/2025/11/valmeinier-valloire-hiver-2025-2026-v7-hd.pdf"
+      }
     ]
   },
+
   {
-    name: "Arêches-Beaufort", coords: [45.6881, 6.5624], total: 409, drive: "~1655 km",
+    name: "Arêches-Beaufort",
+    coords: [45.6881, 6.5624],
+    total: 409,
     note: "Highest peak only 2300 m. Chalet 780€ total.",
     items: [
-      { label: "Chalet Les Gentianes", price: "195", url: "https://reservation.areches-beaufort.com/les-gentianes-1.html" },
-      { label: "Skipass", price: "214", url: null },
-      { label: "Piste map", price: "", url: "https://en.areches-beaufort.com/to-do/all-the-slides/Alpine-skiing/" }
+      {
+        label: "Chalet Les Gentianes",
+        price: "195",
+        url: "https://reservation.areches-beaufort.com/les-gentianes-1.html"
+      },
+      {
+        label: "Skipass",
+        price: "214",
+        url: null
+      },
+      {
+        label: "Piste map",
+        price: "",
+        url: "https://en.areches-beaufort.com/to-do/all-the-slides/Alpine-skiing/"
+      }
     ]
   },
+
   {
-    name: "La Norma", coords: [45.2014, 6.6970], total: 508, drive: "~1686 km",
+    name: "La Norma",
+    coords: [45.2014, 6.6970],
+    total: 508,
     note: "Biggest flat of the bunch: 90 m². ~1150€ total.",
     items: [
-      { label: "Flat APT04 · 90 m²", price: "~288", url: "https://la-norma-valfrejus.locvacances.com/en-GB/Lot/Detail" },
-      { label: "Skipass", price: "220", url: "https://www.la-norma.ski/en/ski-passes-prices/" },
-      { label: "Piste map", price: "", url: "https://www.la-norma.ski/en/ski-map/" }
+      {
+        label: "Flat APT04 · 90 m²",
+        price: "~288",
+        url: "https://la-norma-valfrejus.locvacances.com/en-GB/Lot/Detail"
+      },
+      {
+        label: "Skipass",
+        price: "220",
+        url: "https://www.la-norma.ski/en/ski-passes-prices/"
+      },
+      {
+        label: "Piste map",
+        price: "",
+        url: "https://www.la-norma.ski/en/ski-map/"
+      }
     ]
   },
+
   {
-    name: "Bonneval-sur-Arc", coords: [45.3733, 7.0483], total: 460, drive: "~1723 km",
+    name: "Bonneval-sur-Arc",
+    coords: [45.3733, 7.0483],
+    total: 460,
     note: "Flat 90 m² (1067€ total), dates 02-01-2027 → 09-01-2027.",
     items: [
-      { label: "La Benna · 90 m²", price: "267", url: "https://booking.haute-maurienne-vanoise.com/dp80-la-benna-bonneval-sur-arc/MARK-63868-BENNA1*282mon?DateRecherche=2027-01-02|2027-01-09" },
-      { label: "Skipass", price: "193", url: null },
-      { label: "Live piste openings", price: "", url: "https://live.lumiplan.pro/bonnevalsurarc.php?resort=bonnevalsurarc&module=ouvertures" }
+      {
+        label: "La Benna · 90 m²",
+        price: "267",
+        url: "https://booking.haute-maurienne-vanoise.com/dp80-la-benna-bonneval-sur-arc/MARK-63868-BENNA1*282mon?DateRecherche=2027-01-02%7C2027-01-09"
+      },
+      {
+        label: "Skipass",
+        price: "193",
+        url: null
+      },
+      {
+        label: "Live piste openings",
+        price: "",
+        url: "https://live.lumiplan.pro/bonnevalsurarc.php?resort=bonnevalsurarc&module=ouvertures"
+      }
     ]
   },
+
   {
-    name: "Aussois", coords: [45.2275, 6.7414], total: 435, drive: "~1688 km",
+    name: "Aussois",
+    coords: [45.2275, 6.7414],
+    total: 435,
     note: "Le Chamois, up to 6 pers. Flat 890€ total.",
     items: [
-      { label: "Le Chamois · 6 pers. max", price: "223", url: "https://www.aussois.com/en/meuble-reservable/le-chamois-6-pers-max/" },
-      { label: "Skipass", price: "212", url: "https://www.aussois.com/en/ski-et-glisse/les-forfaits-de-ski/" },
-      { label: "Snow & piste report", price: "", url: "https://www.aussois.com/en/info-neige-et-pistes/" }
+      {
+        label: "Le Chamois · 6 pers. max",
+        price: "223",
+        url: "https://www.aussois.com/en/meuble-reservable/le-chamois-6-pers-max/"
+      },
+      {
+        label: "Skipass",
+        price: "212",
+        url: "https://www.aussois.com/en/ski-et-glisse/les-forfaits-de-ski/"
+      },
+      {
+        label: "Snow & piste report",
+        price: "",
+        url: "https://www.aussois.com/en/info-neige-et-pistes/"
+      }
     ]
   },
+
   {
-    name: "La Rosière", coords: [45.6286, 6.8478], total: 581, drive: "~1705 km · 20h",
+    name: "La Rosière",
+    coords: [45.6286, 6.8478],
+    total: 581,
     note: "Priciest skipass — but it is Espace San Bernardo, ski over to La Thuile (IT). Chalet 1120€ total.",
     items: [
-      { label: "3-bedroom chalet · 6 pers.", price: "280", url: "https://booking.larosiere.net/3-bedrooms-chalet-6-people-jean-jacques-fourn-bari2.html" },
-      { label: "Skipass", price: "301", url: "https://www.larosiere.net/en/ski-passes/" },
-      { label: "Piste map", price: "", url: "https://www.larosiere.net/en/ski-map/" }
+      {
+        label: "3-bedroom chalet · 6 pers.",
+        price: "280",
+        url: "https://booking.larosiere.net/3-bedrooms-chalet-6-people-jean-jacques-fourn-bari2.html"
+      },
+      {
+        label: "Skipass",
+        price: "301",
+        url: "https://www.larosiere.net/en/ski-passes/"
+      },
+      {
+        label: "Piste map",
+        price: "",
+        url: "https://www.larosiere.net/en/ski-map/"
+      }
     ]
   }
 ];
 
-const map = L.map("map", { scrollWheelZoom: true });
+
+/* -------------------------------------------------------
+   MAP
+------------------------------------------------------- */
+
+const map = L.map("map", {
+  scrollWheelZoom: true
+});
+
 map.zoomControl.setPosition("bottomleft");
+
+
+/* -------------------------------------------------------
+   BASE MAPS
+------------------------------------------------------- */
+
 const base = {
-  "OpenStreetMap": L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', maxZoom: 19
-  }).addTo(map),
-  "Terrain (OpenTopoMap)": L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
-    attribution: '&copy; OpenStreetMap, SRTM | &copy; <a href="https://opentopomap.org">OpenTopoMap</a>', maxZoom: 17
-  })
+  "OpenStreetMap": L.tileLayer(
+    "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19
+    }
+  ).addTo(map),
+
+  "Terrain (OpenTopoMap)": L.tileLayer(
+    "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+    {
+      attribution:
+        '&copy; OpenStreetMap, SRTM | &copy; <a href="https://opentopomap.org">OpenTopoMap</a>',
+      maxZoom: 17
+    }
+  )
 };
-const pistes = L.tileLayer("https://tiles.opensnowmap.org/pistes/{z}/{x}/{y}.png", {
-  attribution: '&copy; <a href="https://www.opensnowmap.org">OpenSnowMap</a>', maxZoom: 18, opacity: .9
-}).addTo(map);
-L.control.layers(base, { "Pistes & lifts": pistes }, { collapsed: false }).addTo(map);
 
-const link = (i) => i.url
-  ? `<a href="${i.url}" target="_blank" rel="noopener">${i.label} ↗</a>`
-  : `<span>${i.label}</span>`;
 
-const popup = (o) => `
-  <p class="p-name">${o.name}</p>
-  <p class="p-note">${o.note}</p>
-  ${o.items.map(i => `<div class="row">${link(i)}<span class="price">${i.price ? i.price + " €" : ""}</span></div>`).join("")}
-  <div class="row"><span>🚗 Drive from Santiago</span><span class="dim">${o.drive}</span></div>
-  <div class="total"><span>Cheapest total / person</span><span class="price">~${o.total} €</span></div>`;
+/* -------------------------------------------------------
+   SKI PISTES / LIFTS
+------------------------------------------------------- */
 
-// circle marker: one size knob, anchored dead center on the coordinate
+const pistes = L.tileLayer(
+  "https://tiles.opensnowmap.org/pistes/{z}/{x}/{y}.png",
+  {
+    attribution:
+      '&copy; <a href="https://www.opensnowmap.org">OpenSnowMap</a>',
+    maxZoom: 18,
+    opacity: 0.9
+  }
+).addTo(map);
+
+L.control.layers(
+  base,
+  {
+    "Pistes & lifts": pistes
+  },
+  {
+    collapsed: false
+  }
+).addTo(map);
+
+
+/* -------------------------------------------------------
+   LINKS INSIDE POPUPS
+------------------------------------------------------- */
+
+const link = (item) => {
+  if (!item.url) {
+    return `<span>${item.label}</span>`;
+  }
+
+  return `
+    <a
+      href="${item.url}"
+      target="_blank"
+      rel="noopener"
+    >
+      ${item.label} ↗
+    </a>
+  `;
+};
+
+
+/* -------------------------------------------------------
+   GOOGLE MAPS DIRECTIONS
+   Opens Google Maps with the ski resort as destination.
+   The user can choose/change their starting point.
+------------------------------------------------------- */
+
+const directionsLink = (option) => {
+  const [lat, lng] = option.coords;
+
+  const url =
+    `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+
+  return `
+    <a
+      class="directions"
+      href="${url}"
+      target="_blank"
+      rel="noopener"
+    >
+      🚗 Get directions in Google Maps ↗
+    </a>
+  `;
+};
+
+
+/* -------------------------------------------------------
+   POPUP
+------------------------------------------------------- */
+
+const popup = (option) => `
+  <p class="p-name">${option.name}</p>
+
+  <p class="p-note">
+    ${option.note}
+  </p>
+
+  ${option.items
+    .map(
+      item => `
+        <div class="row">
+          ${link(item)}
+          <span class="price">
+            ${item.price ? item.price + " €" : ""}
+          </span>
+        </div>
+      `
+    )
+    .join("")}
+
+  <div class="row">
+    ${directionsLink(option)}
+  </div>
+
+  <div class="total">
+    <span>Cheapest total / person</span>
+    <span class="price">
+      ~${option.total} €
+    </span>
+  </div>
+`;
+
+
+/* -------------------------------------------------------
+   MARKERS
+------------------------------------------------------- */
+
 const S = 44;
-const markers = OPTIONS.map(o =>
-  L.marker(o.coords, {
+
+const markers = OPTIONS.map(option =>
+  L.marker(option.coords, {
     icon: L.divIcon({
-      className: "", iconSize: [S, S], iconAnchor: [S / 2, S / 2], popupAnchor: [0, -S / 2 - 2],
-      html: `<div class="pin">⛷️<span class="cap">${o.total}€</span></div>`
+      className: "",
+      iconSize: [S, S],
+      iconAnchor: [S / 2, S / 2],
+      popupAnchor: [0, -S / 2 - 2],
+
+      html: `
+        <div class="pin">
+          ⛷️
+          <span class="cap">
+            ${option.total}€
+          </span>
+        </div>
+      `
     }),
-    title: o.name
-  }).bindPopup(popup(o)).addTo(map)
+
+    title: option.name
+  })
+    .bindPopup(popup(option))
+    .addTo(map)
 );
 
-map.fitBounds(L.featureGroup(markers).getBounds().pad(0.25));
+
+/* -------------------------------------------------------
+   FIT MAP TO ALL MARKERS
+------------------------------------------------------- */
+
+map.fitBounds(
+  L.featureGroup(markers)
+    .getBounds()
+    .pad(0.25)
+);
 </script>
+
 </body>
 </html>
