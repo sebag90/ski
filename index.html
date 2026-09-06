@@ -61,12 +61,23 @@
 // Prices in € PER PERSON (4 people): flat split by 4, skipass as-is.
 const OPTIONS = [
   {
+    name: "Le Orcieres", coords: [44.6941, 6.3208], total: 487 , drive: "~1587 km",
+    note: "",
+    items: [
+      {label: "le chamois", price: "~221", url: "https://reservation.orcieres.com/appartement-3-pieces-6-personnes-le-chamois-entree-n5.html?&cid=2&action=result&resa_action=result"},
+      {label: "le queyrelet", price: "~259", url: "https://reservation.orcieres.com/appartement-3-pieces-le-queyrelet-2-6-personnes.html?&cid=2&action=result&resa_action=result"},
+      {label: "chalet le baptiste (400m des pistes)", price: "~210", url: "https://reservation.orcieres.com/chalet-le-baptiste-haut-4-pieces-8-personnes.html?&cid=2&action=result&resa_action=result"},
+      {label: "chalet les 3 flocons", price: "~313", url: "https://reservation.orcieres.com/chalet-les-3-flocons-4-pieces-6-personnes.html?&cid=2&action=result&resa_action=result"},
+      {label: "Skipass", price: "227", url: "https://pass.orcieres.com/fr/billetterie?filter=ski"},
+      {label: "Piste MAP", price: "", url: "https://www.orcieres.com/activites/hiver/ski/domaine-skiable/plan-des-pistes/"}
+    ]
+  },
+  {
     name: "Les Orres", coords: [44.4933, 6.5558], total: 554 , drive: "~1589 km",
     note: "Herrenhaus (bus oder auto) oder residence",
     items: [
       {label: "La Meleziere (herrenhaus)", price: "~315", url: "https://www.gites-de-france.com/fr/provence-alpes-cote-dazur/hautes-alpes/la-meleziere-les-cimes-05g6516?from=2027-01-16&to=2027-01-23&adults=4&children=0&infants=0"},
       {label: "le belvedere", price: "267", url: "https://reservation.lesorres.com/centre-station-1650/601-le-belvedere-4-pieces-10-personnes-ouest-1bel601.html?&cid=2&action=result&resa_action=result"},
-      
       {label: "Skipass", price: "239", url: "https://www.lesorres.com/skier-aux-orres/le-domaine-skiable/les-forfaits-de-ski"},
       {label: "Piste MAP", price: "", url: "https://www.lesorres.com/sites/default/files/documents/plan-des-pistes-les-orres-2025-26-complet-bd.pdf"}
     ]
