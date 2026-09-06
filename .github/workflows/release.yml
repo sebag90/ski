@@ -25,7 +25,7 @@ jobs:
 
   cleanup:
     name: Cleanup Old Container Versions
-    needs: build-and-push
+    needs: container
     runs-on: ubuntu-latest
     concurrency:
       group: cleanup-images
