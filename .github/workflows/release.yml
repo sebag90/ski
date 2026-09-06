@@ -22,3 +22,19 @@ jobs:
           tags: |
             ghcr.io/sebag90/ski:latest
             ghcr.io/sebag90/ski:${{ github.sha }}
+
+  cleanup:
+    name: Cleanup Old Container Versions
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    concurrency:
+      group: cleanup-images
+    permissions:
+      packages: write
+    steps:
+      - name: Cleanup Old GHCR Images
+        uses: step-security/ghcr-cleanup-action@v1
+        with:
+          packages: 'ski'
+          keep-n-tagged: 3
+          token: ${{ secrets.GITHUB_TOKEN }}
