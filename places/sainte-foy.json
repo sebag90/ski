@@ -1,0 +1,31 @@
+{
+  "name": "Sainte Foy",
+  "coords": [
+    45.5767,
+    6.8942
+  ],
+  "total": "555 ~ 620",
+  "note": "Skipass dynamic pricing — budgeting the worst case, 270€. Flat ~1400€ total.",
+  "items": [
+    {
+      "label": "Chalet Les Charmettes",
+      "price": "~285",
+      "url": "https://www.gites-de-france-savoie.com/Hebergements/gite/chalet-les-charmettes-73G173144.html?&insee=73232"
+    },
+    {
+      "label": "Le Ruitor",
+      "price": "~350",
+      "url": "https://www.travelski.com/station-ski/sainte-foy-tarentaise/residence-le-ruitor/appartement-4-pieces-6-personnes-confort-espace-71953#origin=Search&theme=LocationSeule&period=20270116%7C20270123&travelers=4%7C0%7C0%7C0"
+    },
+    {
+      "label": "Skipass",
+      "price": "~270",
+      "url": "https://www.saintefoy-ski.com/forfait-de-ski/"
+    },
+    {
+      "label": "Piste MAP",
+      "price": "",
+      "url": "https://www.saintefoy-ski.com/plan-des-pistes/"
+    }
+  ]
+}

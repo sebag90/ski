@@ -1,0 +1,41 @@
+{
+  "name": "Le Orcieres",
+  "coords": [
+    44.6941,
+    6.3208
+  ],
+  "total": 487,
+  "note": "",
+  "items": [
+    {
+      "label": "Le Chamois",
+      "price": "~221",
+      "url": "https://reservation.orcieres.com/appartement-3-pieces-6-personnes-le-chamois-entree-n5.html?&cid=2&action=result&resa_action=result"
+    },
+    {
+      "label": "Le Queyrelet",
+      "price": "~259",
+      "url": "https://reservation.orcieres.com/appartement-3-pieces-le-queyrelet-2-6-personnes.html?&cid=2&action=result&resa_action=result"
+    },
+    {
+      "label": "Chalet Le Baptiste (400m des pistes)",
+      "price": "~210",
+      "url": "https://reservation.orcieres.com/chalet-le-baptiste-haut-4-pieces-8-personnes.html?&cid=2&action=result&resa_action=result"
+    },
+    {
+      "label": "Chalet Les 3 Flocons",
+      "price": "~313",
+      "url": "https://reservation.orcieres.com/chalet-les-3-flocons-4-pieces-6-personnes.html?&cid=2&action=result&resa_action=result"
+    },
+    {
+      "label": "Skipass",
+      "price": "227",
+      "url": "https://pass.orcieres.com/fr/billetterie?filter=ski"
+    },
+    {
+      "label": "Piste MAP",
+      "price": "",
+      "url": "https://www.orcieres.com/activites/hiver/ski/domaine-skiable/plan-des-pistes/"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "Puy Saint Vincent",
+  "coords": [
+    44.8195,
+    6.4885
+  ],
+  "total": 422,
+  "note": "",
+  "items": [
+    {
+      "label": "Gîte La Bergerie",
+      "price": "~213",
+      "url": "https://www.gites-de-france-hautes-alpes.com/location-vacances-Gite-La-Bergerie-a-Puy-saint-vincent-05G9445.html?insee=05110&deb=16/01/2027&fin=23/01/2027&exe=2027&reload=true"
+    },
+    {
+      "label": "Skipass",
+      "price": "209",
+      "url": "https://www.puysaintvincent.com/forfait-ski-puy-saint-vincent?type=48"
+    },
+    {
+      "label": "Piste MAP",
+      "price": "",
+      "url": "https://lumiplay.link/interactive-map/Puy-Saint-Vincent/fr?uuid=0"
+    }
+  ]
+}

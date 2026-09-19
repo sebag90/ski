@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Ski Vacation Options</title>
+    <title>Ski Vacation Options & Weather</title>
 
     <link
       rel="icon"
@@ -24,6 +24,7 @@
         --dim: #656d76;
         --accent: #0969da;
         --pin: #cc5a97;
+        --weather-pin: #0284c7;
       }
 
       * {
@@ -52,10 +53,11 @@
         top: 14px;
         left: 14px;
         padding: 10px 16px;
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.92);
         border: 1px solid var(--line);
         border-radius: 10px;
-        backdrop-filter: blur(6px);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
       }
 
       header h1 {
@@ -65,7 +67,7 @@
       }
 
       header p {
-        margin: 2px 0 0;
+        margin: 3px 0 0;
         font-size: 12px;
         color: var(--dim);
       }
@@ -81,7 +83,7 @@
 
       .leaflet-popup-content {
         margin: 14px 16px;
-        width: 280px !important;
+        width: 300px !important;
       }
 
       .leaflet-popup-close-button {
@@ -106,6 +108,7 @@
         gap: 10px;
         padding: 6px 0;
         border-top: 1px solid var(--line);
+        align-items: center;
       }
 
       .row a,
@@ -149,6 +152,7 @@
         border-radius: 7px;
         font-weight: 600;
         text-decoration: none !important;
+        font-size: 13px;
       }
 
       .directions:hover {
@@ -156,8 +160,7 @@
         text-decoration: none !important;
       }
 
-      /* Round skier markers, centered on the coordinate,
-			price pill underneath */
+      /* Skier Resort Pin */
       .pin {
         position: relative;
         width: 100%;
@@ -182,10 +185,10 @@
         transform: translateX(-50%);
         background: var(--pin);
         color: #fff;
-        font-size: 13.5px;
+        font-size: 13px;
         font-weight: 700;
         line-height: 1;
-        padding: 5px 9px;
+        padding: 4px 8px;
         border-radius: 999px;
         white-space: nowrap;
         box-shadow:
@@ -193,344 +196,532 @@
           0 0 0 2px rgba(255, 255, 255, 0.95);
       }
 
+      /* Weather Station Pin */
+      .pin-weather {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: #f0f9ff;
+        display: grid;
+        place-items: center;
+        font-size: 23px;
+        line-height: 1;
+        cursor: pointer;
+        box-shadow:
+          0 0 0 3px var(--weather-pin),
+          0 3px 12px rgba(2, 132, 199, 0.45);
+        transition: transform 0.14s ease-out;
+      }
+
+      .cap-weather {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--weather-pin);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1;
+        padding: 4px 8px;
+        border-radius: 999px;
+        white-space: nowrap;
+        box-shadow:
+          0 1px 5px rgba(2, 132, 199, 0.4),
+          0 0 0 2px rgba(255, 255, 255, 0.95);
+      }
+
       .leaflet-marker-icon:hover {
         z-index: 600 !important;
       }
 
-      .leaflet-marker-icon:hover .pin {
-        transform: scale(1.12);
+      .leaflet-marker-icon:hover .pin,
+      .leaflet-marker-icon:hover .pin-weather {
+        transform: scale(1.15);
+      }
+
+      /* Weather Popup Form */
+      .weather-popup {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .weather-tag {
+        display: inline-block;
+        background: #e0f2fe;
+        color: #0369a1;
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .resorts-served {
+        font-size: 12px;
+        color: var(--dim);
+        line-height: 1.4;
+        background: #f8fafc;
+        padding: 6px 8px;
+        border-radius: 6px;
+        border: 1px solid var(--line);
+      }
+
+      .weather-form {
+        margin-top: 4px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .date-field {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .date-field input {
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 4px 7px;
+        font-size: 12px;
+        font-family: inherit;
+        color: var(--ink);
+        background: #ffffff;
+        outline: none;
+      }
+
+      .date-field input:focus {
+        border-color: var(--weather-pin);
+      }
+
+      .preset-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin: 4px 0;
+      }
+
+      .preset-chip {
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        color: #334155;
+        border-radius: 999px;
+        padding: 3px 8px;
+        font-size: 11px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.1s;
+      }
+
+      .preset-chip:hover {
+        background: #e2e8f0;
+        border-color: #94a3b8;
+      }
+
+      .btn-generate-plot {
+        width: 100%;
+        padding: 9px 12px;
+        background: #0284c7;
+        color: #ffffff;
+        border: none;
+        border-radius: 7px;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: background 0.15s;
+        margin-top: 4px;
+      }
+
+      .btn-generate-plot:hover {
+        background: #0369a1;
+      }
+
+      .resort-weather-btn {
+        width: 100%;
+        padding: 7px 10px;
+        background: #f0f9ff;
+        border: 1px solid #bae6fd;
+        color: #0284c7;
+        border-radius: 7px;
+        font-weight: 600;
+        font-size: 12.5px;
+        cursor: pointer;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: all 0.15s;
+      }
+
+      .resort-weather-btn:hover {
+        background: #e0f2fe;
+        border-color: #7dd3fc;
+      }
+
+      /* Modal for displaying plot */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 3000;
+        background: rgba(15, 23, 42, 0.72);
+        backdrop-filter: blur(6px);
+        padding: 16px;
+        overflow-y: auto;
+        place-items: center;
+      }
+
+      .modal-overlay.active {
+        display: grid;
+      }
+
+      .modal-card {
+        background: #ffffff;
+        border-radius: 14px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+        width: 100%;
+        max-width: 1200px;
+        display: flex;
+        flex-direction: column;
+        max-height: 94vh;
+        border: 1px solid #cbd5e1;
+        overflow: hidden;
+        animation: modalIn 0.18s ease-out;
+      }
+
+      @keyframes modalIn {
+        from {
+          opacity: 0;
+          transform: scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .modal-header {
+        padding: 14px 20px;
+        background: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .modal-title-group h2 {
+        margin: 0;
+        font-size: 17px;
+        color: #0f172a;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .modal-title-group p {
+        margin: 2px 0 0;
+        font-size: 12px;
+        color: var(--dim);
+      }
+
+      .modal-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .modal-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 6px 12px;
+        border: 1px solid var(--line);
+        background: #ffffff;
+        color: #334155;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+
+      .modal-btn:hover {
+        background: #f1f5f9;
+        border-color: #94a3b8;
+      }
+
+      .modal-close-btn {
+        background: transparent;
+        border: none;
+        font-size: 24px;
+        line-height: 1;
+        cursor: pointer;
+        color: var(--dim);
+        padding: 2px 8px;
+        border-radius: 6px;
+      }
+
+      .modal-close-btn:hover {
+        color: #0f172a;
+        background: #e2e8f0;
+      }
+
+      .modal-toolbar {
+        padding: 10px 20px;
+        background: #ffffff;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .toolbar-inputs {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        font-size: 13px;
+        font-weight: 500;
+      }
+
+      .toolbar-inputs input {
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 5px 8px;
+        font-size: 13px;
+        font-family: inherit;
+        color: var(--ink);
+        background: #f8fafc;
+      }
+
+      .btn-refresh {
+        padding: 6px 14px;
+        background: #0284c7;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .btn-refresh:hover {
+        background: #0369a1;
+      }
+
+      .modal-body {
+        padding: 16px;
+        overflow-y: auto;
+        background: #f1f5f9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 420px;
+        position: relative;
+      }
+
+      .modal-plot-img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        display: block;
+      }
+
+      .modal-loader {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        padding: 40px 20px;
+        color: #475569;
+        font-weight: 500;
+      }
+
+      .spinner {
+        width: 42px;
+        height: 42px;
+        border: 4px solid #cbd5e1;
+        border-top-color: #0284c7;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .modal-error {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #b91c1c;
+        padding: 24px;
+        border-radius: 8px;
+        max-width: 500px;
+        text-align: center;
       }
     </style>
   </head>
 
   <body>
     <header>
-      <h1>🎿 Ski Vacation Options</h1>
-      <p>
-        Click a pin — prices per person (4 people), flat split 4 ways + skipass
+      <h1>🎿 Ski Vacation Options & Weather</h1>
+      <p id="header-sub">
+        Loading ski resorts & nearby weather stations...
       </p>
     </header>
 
     <div id="map"></div>
 
+    <!-- Weather Plot Modal -->
+    <div
+      id="weather-modal"
+      class="modal-overlay"
+      onclick="onModalBackdropClick(event)"
+    >
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-title-group">
+            <h2 id="modal-station-title">❄️ Weather Station Overview</h2>
+            <p id="modal-station-sub" class="dim">Meteostat Station Data</p>
+          </div>
+          <div class="modal-header-actions">
+            <a
+              id="modal-download-btn"
+              class="modal-btn"
+              download="ski_weather.png"
+              target="_blank"
+              title="Download Image"
+              >⬇ Download PNG</a
+            >
+            <a
+              id="modal-fullscreen-btn"
+              class="modal-btn"
+              target="_blank"
+              title="Open Full Size in New Tab"
+              >↗ Full Size</a
+            >
+            <button
+              class="modal-close-btn"
+              onclick="closeWeatherModal()"
+              title="Close"
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+
+        <div class="modal-toolbar">
+          <div class="toolbar-inputs">
+            <label
+              >Start:
+              <input type="date" id="modal-start-date" value="2025-12-01"
+            /></label>
+            <label
+              >End:
+              <input type="date" id="modal-end-date" value="2026-01-31"
+            /></label>
+            <button class="btn-refresh" onclick="refreshModalPlot()">
+              🔄 Update Plot
+            </button>
+          </div>
+          <div class="preset-chips">
+            <button
+              type="button"
+              class="preset-chip"
+              onclick="setModalDates('2025-12-01', '2026-01-31')"
+            >
+              Dec 25 – Jan 26
+            </button>
+            <button
+              type="button"
+              class="preset-chip"
+              onclick="setModalDates('2026-01-01', '2026-01-31')"
+            >
+              Jan 2026
+            </button>
+            <button
+              type="button"
+              class="preset-chip"
+              onclick="setModalDates('2025-12-01', '2025-12-31')"
+            >
+              Dec 2025
+            </button>
+            <button
+              type="button"
+              class="preset-chip"
+              onclick="setModalLast30Days()"
+            >
+              Last 30 Days
+            </button>
+          </div>
+        </div>
+
+        <div class="modal-body">
+          <div id="modal-loader" class="modal-loader">
+            <div class="spinner"></div>
+            <p>
+              Fetching Meteostat historical data & generating 3-panel alpine
+              plot...
+            </p>
+          </div>
+
+          <div id="modal-error" class="modal-error">
+            <p id="modal-error-msg">
+              Unable to load plot data. Please verify your selected dates.
+            </p>
+            <button class="modal-btn" onclick="refreshModalPlot()">
+              Retry
+            </button>
+          </div>
+
+          <img
+            id="modal-plot-img"
+            class="modal-plot-img"
+            alt="Alpine Ski Weather Conditions Plot"
+            style="display: none"
+          />
+        </div>
+      </div>
+    </div>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
-      // Prices in € PER PERSON (4 people):
-      // accommodation split by 4, skipass as-is.
-      // Driving distance is intentionally NOT included;
-      // use the Google Maps button in each popup to choose your starting point.
-
-      const OPTIONS = [
-        {
-          name: "Puy Saint Vincent",
-          coords: [44.8195, 6.4885],
-          total: 422,
-          note: "",
-          items: [
-            {
-              label: "Gîte La Bergerie",
-              price: "~213",
-              url: "https://www.gites-de-france-hautes-alpes.com/location-vacances-Gite-La-Bergerie-a-Puy-saint-vincent-05G9445.html?insee=05110&deb=16/01/2027&fin=23/01/2027&exe=2027&reload=true",
-            },
-            {
-              label: "Skipass",
-              price: "209",
-              url: "https://www.puysaintvincent.com/forfait-ski-puy-saint-vincent?type=48",
-            },
-            {
-              label: "Piste MAP",
-              price: "",
-              url: "https://lumiplay.link/interactive-map/Puy-Saint-Vincent/fr?uuid=0",
-            },
-          ],
-        },
-
-        {
-          name: "Le Orcieres",
-          coords: [44.6941, 6.3208],
-          total: 487,
-          note: "",
-          items: [
-            {
-              label: "Le Chamois",
-              price: "~221",
-              url: "https://reservation.orcieres.com/appartement-3-pieces-6-personnes-le-chamois-entree-n5.html?&cid=2&action=result&resa_action=result",
-            },
-            {
-              label: "Le Queyrelet",
-              price: "~259",
-              url: "https://reservation.orcieres.com/appartement-3-pieces-le-queyrelet-2-6-personnes.html?&cid=2&action=result&resa_action=result",
-            },
-            {
-              label: "Chalet Le Baptiste (400m des pistes)",
-              price: "~210",
-              url: "https://reservation.orcieres.com/chalet-le-baptiste-haut-4-pieces-8-personnes.html?&cid=2&action=result&resa_action=result",
-            },
-            {
-              label: "Chalet Les 3 Flocons",
-              price: "~313",
-              url: "https://reservation.orcieres.com/chalet-les-3-flocons-4-pieces-6-personnes.html?&cid=2&action=result&resa_action=result",
-            },
-            {
-              label: "Skipass",
-              price: "227",
-              url: "https://pass.orcieres.com/fr/billetterie?filter=ski",
-            },
-            {
-              label: "Piste MAP",
-              price: "",
-              url: "https://www.orcieres.com/activites/hiver/ski/domaine-skiable/plan-des-pistes/",
-            },
-          ],
-        },
-
-        {
-          name: "Les Orres",
-          coords: [44.4933, 6.5558],
-          total: "506 ~ 554",
-          note: "Herrenhaus (bus oder auto) oder residence",
-          items: [
-            {
-              label: "La Meleziere (Herrenhaus)",
-              price: "~315",
-              url: "https://www.gites-de-france.com/fr/provence-alpes-cote-dazur/hautes-alpes/la-meleziere-les-cimes-05g6516?from=2027-01-16&to=2027-01-23&adults=4&children=0&infants=0",
-            },
-            {
-              label: "LE CAIRN",
-              price: "~275",
-              url: "https://www.locations-les-orres.com/orres+05+appartement+location-vacances+r27215869.html?marche=1&transaction_url=location-vacances&type_url=appartement-studio-loft&sous_type=1",
-            },
-            {
-              label: "Le Belvedere",
-              price: "267",
-              url: "https://reservation.lesorres.com/centre-station-1650/601-le-belvedere-4-pieces-10-personnes-ouest-1bel601.html?&cid=2&action=result&resa_action=result",
-            },
-            {
-              label: "Skipass",
-              price: "239",
-              url: "https://www.lesorres.com/skier-aux-orres/le-domaine-skiable/les-forfaits-de-ski",
-            },
-            {
-              label: "Piste MAP",
-              price: "",
-              url: "https://www.lesorres.com/sites/default/files/documents/plan-des-pistes-les-orres-2025-26-complet-bd.pdf",
-            },
-          ],
-        },
-
-        {
-          name: "Les Karellis",
-          coords: [45.2059, 6.4192],
-          total: 441,
-          note: "No supermarket or boulangerie in the village",
-          items: [
-            {
-              label: "Le Lagopede",
-              price: "~174",
-              url: "https://www.gites-de-france-savoie.com/Hebergements/gite/le-lagopede-73G173116.html?&insee=73173",
-            },
-            {
-              label: "Gite de L'ours",
-              price: "208",
-              url: "https://www.gites-de-france-savoie.com/Hebergements/gite/le-gite-de-l-ours-73G173117.html?&insee=73173",
-            },
-            {
-              label: "Skipass",
-              price: "191",
-              url: "https://www.leskarellis.com/fr/tarifs-2026-2027-sans-lien",
-            },
-            {
-              label: "Piste MAP",
-              price: "",
-              url: "https://www.karellis.com/wp-content/uploads/Plan-des-pistes-2023-compresse.pdf",
-            },
-          ],
-        },
-
-        {
-          name: "Sainte Foy",
-          coords: [45.5767, 6.8942],
-          total: "555 ~ 620",
-          note: "Skipass dynamic pricing — budgeting the worst case, 270€. Flat ~1400€ total.",
-          items: [
-            {
-              label: "Chalet Bella Comba – Le Monal",
-              price: "~350",
-              url: "https://www.saintefoy-reservation.com/fr/hebergements/chalet-bella-comba-le-monal/",
-            },
-            {
-              label: "Appartement Soldanelle",
-              price: "~315",
-              url: "https://www.saintefoy-reservation.com/fr/hebergements/soldanelle-appartement-dans-petite-residence/",
-            },
-            {
-              label: "Skipass",
-              price: "240 ~ 270",
-              url: "https://www.saintefoy-tarentaise.com/a-faire/activites-hiver/ski-et-snowboard/forfaits-de-ski/",
-            },
-            {
-              label: "Piste",
-              price: "",
-              url: "https://woody.cloudly.space/app/uploads/saintefoy-tarentaise/2024/09/thumbs/skimap-1920x1487.webp",
-            },
-          ],
-        },
-
-        {
-          name: "Valloire",
-          coords: [45.165, 6.429],
-          total: 445,
-          note: "Two flats. Prices include ~100€ cleaning, then split by 4 (942€ / 1188€ total).",
-          items: [
-            {
-              label: "3 rooms – L'Orée des Pistes n°5",
-              price: "236",
-              url: "https://en.valloire.com/3-rooms-l-oree-des-pistes-n-5.html",
-            },
-            {
-              label: "3 rooms mezzanine – Chalets du Galibier I B37",
-              price: "297",
-              url: "https://en.valloire.com/3-rooms-mezzanine-chalets-du-galibier-i-b37.html",
-            },
-            {
-              label: "Skipass",
-              price: "209",
-              url: null,
-            },
-            {
-              label: "Piste map (PDF)",
-              price: "",
-              url: "https://static.valloire.net/app/uploads/2025/11/valmeinier-valloire-hiver-2025-2026-v7-hd.pdf",
-            },
-          ],
-        },
-
-        {
-          name: "Arêches-Beaufort",
-          coords: [45.6881, 6.5624],
-          total: 409,
-          note: "Highest peak only 2300 m. Chalet 780€ total.",
-          items: [
-            {
-              label: "Chalet Les Gentianes",
-              price: "195",
-              url: "https://reservation.areches-beaufort.com/les-gentianes-1.html",
-            },
-            {
-              label: "Skipass",
-              price: "214",
-              url: null,
-            },
-            {
-              label: "Piste map",
-              price: "",
-              url: "https://en.areches-beaufort.com/to-do/all-the-slides/Alpine-skiing/",
-            },
-          ],
-        },
-
-        {
-          name: "La Norma",
-          coords: [45.2014, 6.697],
-          total: 508,
-          note: "Biggest flat of the bunch: 90 m². ~1150€ total.",
-          items: [
-            {
-              label: "Flat APT04 · 90 m²",
-              price: "~288",
-              url: "https://la-norma-valfrejus.locvacances.com/en-GB/Lot/Detail",
-            },
-            {
-              label: "Skipass",
-              price: "220",
-              url: "https://www.la-norma.ski/en/ski-passes-prices/",
-            },
-            {
-              label: "Piste map",
-              price: "",
-              url: "https://www.la-norma.ski/en/ski-map/",
-            },
-          ],
-        },
-
-        {
-          name: "Bonneval-sur-Arc",
-          coords: [45.3733, 7.0483],
-          total: 460,
-          note: "Flat 90 m² (1067€ total), dates 02-01-2027 → 09-01-2027.",
-          items: [
-            {
-              label: "La Benna · 90 m²",
-              price: "267",
-              url: "https://booking.haute-maurienne-vanoise.com/dp80-la-benna-bonneval-sur-arc/MARK-63868-BENNA1*282mon?DateRecherche=2027-01-02%7C2027-01-09",
-            },
-            {
-              label: "Skipass",
-              price: "193",
-              url: null,
-            },
-            {
-              label: "Live piste openings",
-              price: "",
-              url: "https://live.lumiplan.pro/bonnevalsurarc.php?resort=bonnevalsurarc&module=ouvertures",
-            },
-          ],
-        },
-
-        {
-          name: "Aussois",
-          coords: [45.2275, 6.7414],
-          total: 435,
-          note: "Le Chamois, up to 6 pers. Flat 890€ total.",
-          items: [
-            {
-              label: "Le Chamois · 6 pers. max",
-              price: "223",
-              url: "https://www.aussois.com/en/meuble-reservable/le-chamois-6-pers-max/",
-            },
-            {
-              label: "Skipass",
-              price: "212",
-              url: "https://www.aussois.com/en/ski-et-glisse/les-forfaits-de-ski/",
-            },
-            {
-              label: "Snow & piste report",
-              price: "",
-              url: "https://www.aussois.com/en/info-neige-et-pistes/",
-            },
-          ],
-        },
-
-        {
-          name: "La Rosière",
-          coords: [45.6286, 6.8478],
-          total: 581,
-          note: "Priciest skipass — but it is Espace San Bernardo, ski over to La Thuile (IT). Chalet 1120€ total.",
-          items: [
-            {
-              label: "3-bedroom chalet · 6 pers.",
-              price: "280",
-              url: "https://booking.larosiere.net/3-bedrooms-chalet-6-people-jean-jacques-fourn-bari2.html",
-            },
-            {
-              label: "Skipass",
-              price: "301",
-              url: "https://www.larosiere.net/en/ski-passes/",
-            },
-            {
-              label: "Piste map",
-              price: "",
-              url: "https://www.larosiere.net/en/ski-map/",
-            },
-          ],
-        },
-      ];
+      // State populated dynamically from /api/places and /api/stations
+      let PLACES = [];
+      let STATIONS = [];
 
       /* -------------------------------------------------------
-																																										MAP
-																																										------------------------------------------------------- */
-
+         MAP INITIALIZATION
+         ------------------------------------------------------- */
       const map = L.map("map", {
         scrollWheelZoom: true,
       });
@@ -538,9 +729,8 @@
       map.zoomControl.setPosition("bottomleft");
 
       /* -------------------------------------------------------
-																																											BASE MAPS
-																																											------------------------------------------------------- */
-
+         BASE MAPS & OVERLAYS
+         ------------------------------------------------------- */
       const base = {
         OpenStreetMap: L.tileLayer(
           "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -561,10 +751,6 @@
         ),
       };
 
-      /* -------------------------------------------------------
-																																												SKI PISTES / LIFTS
-																																												------------------------------------------------------- */
-
       const pistes = L.tileLayer(
         "https://tiles.opensnowmap.org/pistes/{z}/{x}/{y}.png",
         {
@@ -575,11 +761,16 @@
         },
       ).addTo(map);
 
+      const resortLayer = L.layerGroup().addTo(map);
+      const weatherLayer = L.layerGroup().addTo(map);
+
       L.control
         .layers(
           base,
           {
             "Pistes & lifts": pistes,
+            "⛷️ Ski Resorts": resortLayer,
+            "❄️ Weather Stations": weatherLayer,
           },
           {
             collapsed: false,
@@ -588,123 +779,361 @@
         .addTo(map);
 
       /* -------------------------------------------------------
-																																													LINKS INSIDE POPUPS
-																																													------------------------------------------------------- */
-
+         POPUP HELPERS
+         ------------------------------------------------------- */
       const link = (item) => {
-        if (!item.url) {
-          return `<span>${item.label}</span>`;
-        }
-
-        return `
-																																														<a
-																																														href="${item.url}"
-																																														target="_blank"
-																																														rel="noopener"
-																																														>
-																																														${item.label} ↗
-																																														</a>
-																																														`;
+        if (!item.url) return `<span>${item.label}</span>`;
+        return `<a href="${item.url}" target="_blank" rel="noopener">${item.label} ↗</a>`;
       };
-
-      /* -------------------------------------------------------
-																																														GOOGLE MAPS DIRECTIONS
-																																														Opens Google Maps with the ski resort as destination.
-																																														The user can choose/change their starting point.
-																																														------------------------------------------------------- */
 
       const directionsLink = (option) => {
         const [lat, lng] = option.coords;
-
         const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+        return `<a class="directions" href="${url}" target="_blank" rel="noopener">🚗 Get directions in Google Maps ↗</a>`;
+      };
+
+      function getClosestStation(coords) {
+        if (!STATIONS.length) return null;
+        let closest = STATIONS[0];
+        let minD = Infinity;
+        for (const st of STATIONS) {
+          const d = Math.hypot(st.coords[0] - coords[0], st.coords[1] - coords[1]);
+          if (d < minD) {
+            minD = d;
+            closest = st;
+          }
+        }
+        return closest;
+      }
+
+      // Skier Resort Popup
+      const resortPopup = (option) => {
+        const station = getClosestStation(option.coords);
+        const weatherBtnHtml = station
+          ? `
+          <div class="row" style="margin-top: 4px;">
+            <button type="button" class="resort-weather-btn" onclick="openWeatherModal('${station.id}', '${station.name}', [${station.coords}], '2025-12-01', '2026-01-31')">
+              ❄️ View Weather Plot (${station.name})
+            </button>
+          </div>
+        `
+          : "";
+
+        const itemsHtml = (option.items || [])
+          .map(
+            (item) => `
+          <div class="row">
+            ${link(item)}
+            <span class="price">${item.price ? item.price + " €" : ""}</span>
+          </div>
+        `,
+          )
+          .join("");
 
         return `
-																																															<a
-																																															class="directions"
-																																															href="${url}"
-																																															target="_blank"
-																																															rel="noopener"
-																																															>
-																																															🚗 Get directions in Google Maps ↗
-																																															</a>
-																																															`;
+          <p class="p-name">${option.name}</p>
+          <p class="p-note">${option.note || ""}</p>
+          
+          ${itemsHtml}
+          
+          <div class="row">
+            ${directionsLink(option)}
+          </div>
+
+          ${weatherBtnHtml}
+
+          <div class="total">
+            <span>Cheapest total / person</span>
+            <span class="price">~${option.total} €</span>
+          </div>
+        `;
+      };
+
+      // Weather Station Popup
+      const weatherPopup = (st) => {
+        const servesList = (st.serves || []).slice(0, 5).join(", ");
+        return `
+          <div class="weather-popup">
+            <span class="weather-tag">METEOSTAT STATION</span>
+            <p class="p-name">❄️ ${st.name}</p>
+            <p class="p-note">Elevation: ${st.elevation ? st.elevation + " m" : "N/A"} • ID: ${st.id}</p>
+            
+            <div class="resorts-served">
+              <strong>Near resorts:</strong><br/>
+              ${servesList || "Alpine Region"}
+            </div>
+
+            <div class="weather-form">
+              <div class="date-field">
+                <label for="w-start-${st.id}">Start Datum:</label>
+                <input type="date" id="w-start-${st.id}" value="2025-12-01" />
+              </div>
+              <div class="date-field">
+                <label for="w-end-${st.id}">End Datum:</label>
+                <input type="date" id="w-end-${st.id}" value="2026-01-31" />
+              </div>
+
+              <div class="preset-chips">
+                <button type="button" class="preset-chip" onclick="setWeatherDates('${st.id}', '2025-12-01', '2026-01-31')">Dec 25 – Jan 26</button>
+                <button type="button" class="preset-chip" onclick="setWeatherDates('${st.id}', '2026-01-01', '2026-01-31')">Jan 2026</button>
+                <button type="button" class="preset-chip" onclick="setWeatherDates('${st.id}', '2025-12-01', '2025-12-31')">Dec 2025</button>
+                <button type="button" class="preset-chip" onclick="setLast30Days('${st.id}')">Last 30 Days</button>
+              </div>
+
+              <button type="button" class="btn-generate-plot" onclick="submitWeatherPlot('${st.id}')">
+                📊 Plot Ski Conditions
+              </button>
+            </div>
+          </div>
+        `;
       };
 
       /* -------------------------------------------------------
-																																															POPUP
-																																															------------------------------------------------------- */
-
-      const popup = (option) => `
-																																															<p class="p-name">${option.name}</p>
-																																															
-																																															<p class="p-note">
-																																															${option.note}
-																																															</p>
-																																															
-																																															${option.items
-                                                                                                .map(
-                                                                                                  (
-                                                                                                    item,
-                                                                                                  ) => `
-																																															<div class="row">
-																																															${link(item)}
-																																															<span class="price">
-																																															${item.price ? item.price + " €" : ""}
-																																															</span>
-																																															</div>
-																																															`,
-                                                                                                )
-                                                                                                .join(
-                                                                                                  "",
-                                                                                                )}
-																																															
-																																															<div class="row">
-																																															${directionsLink(option)}
-																																															</div>
-																																															
-																																															<div class="total">
-																																															<span>Cheapest total / person</span>
-																																															<span class="price">
-																																															~${option.total} €
-																																															</span>
-																																															</div>
-																																															`;
-
-      /* -------------------------------------------------------
-																																															MARKERS
-																																															------------------------------------------------------- */
-
+         DYNAMIC MARKER RENDERING
+         ------------------------------------------------------- */
       const S = 44;
 
-      const markers = OPTIONS.map((option) =>
-        L.marker(option.coords, {
-          icon: L.divIcon({
-            className: "",
-            iconSize: [S, S],
-            iconAnchor: [S / 2, S / 2],
-            popupAnchor: [0, -S / 2 - 2],
+      function renderMarkers(places, stations) {
+        resortLayer.clearLayers();
+        weatherLayer.clearLayers();
 
-            html: `
-																																																	<div class="pin">
-																																																	⛷️
-																																																	<span class="cap">
-																																																	${option.total}€
-																																																	</span>
-																																																	</div>
-																																																	`,
-          }),
+        // 1. Render Skier Resort Pins (⛷️)
+        const skiMarkers = places.map((option) =>
+          L.marker(option.coords, {
+            icon: L.divIcon({
+              className: "",
+              iconSize: [S, S],
+              iconAnchor: [S / 2, S / 2],
+              popupAnchor: [0, -S / 2 - 2],
+              html: `
+                <div class="pin">
+                  ⛷️
+                  <span class="cap">${option.total}€</span>
+                </div>
+              `,
+            }),
+            title: option.name,
+          })
+            .bindPopup(resortPopup(option))
+            .addTo(resortLayer),
+        );
 
-          title: option.name,
-        })
-          .bindPopup(popup(option))
-          .addTo(map),
-      );
+        // 2. Render Weather Station Pins (❄️ at actual station coords)
+        const weatherMarkers = stations.map((st) =>
+          L.marker(st.coords, {
+            icon: L.divIcon({
+              className: "",
+              iconSize: [S, S],
+              iconAnchor: [S / 2, S / 2],
+              popupAnchor: [0, -S / 2 - 2],
+              html: `
+                <div class="pin-weather">
+                  ❄️
+                  <span class="cap-weather">${st.elevation ? st.elevation + "m" : "Weather"}</span>
+                </div>
+              `,
+            }),
+            title: `${st.name} Weather Station`,
+          })
+            .bindPopup(weatherPopup(st))
+            .addTo(weatherLayer),
+        );
+
+        // Fit map bounds to show all markers
+        const allMarkers = skiMarkers.concat(weatherMarkers);
+        if (allMarkers.length > 0) {
+          map.fitBounds(L.featureGroup(allMarkers).getBounds().pad(0.18));
+        }
+      }
 
       /* -------------------------------------------------------
-																																																	FIT MAP TO ALL MARKERS
-																																																	------------------------------------------------------- */
+         FETCH DATA FROM BACKEND ON LOAD
+         ------------------------------------------------------- */
+      async function loadMapData() {
+        const headerSub = document.getElementById("header-sub");
+        try {
+          const [placesResp, stationsResp] = await Promise.all([
+            fetch("/api/places").then((r) => r.json()),
+            fetch("/api/stations").then((r) => r.json()),
+          ]);
 
-      map.fitBounds(L.featureGroup(markers).getBounds().pad(0.25));
+          PLACES = placesResp.places || [];
+          STATIONS = stationsResp.stations || [];
+          const distLimit = stationsResp.station_distance_km || 50;
+
+          renderMarkers(PLACES, STATIONS);
+
+          headerSub.innerText = `Click ⛷️ for ${PLACES.length} resort options • Click ❄️ for ${STATIONS.length} weather stations within ${distLimit}km`;
+        } catch (err) {
+          console.error("Error loading places or stations:", err);
+          headerSub.innerText =
+            "Failed to load places/stations from backend. Ensure 'python3 server.py' is running.";
+        }
+      }
+
+      // Load upon page start
+      loadMapData();
+
+      /* -------------------------------------------------------
+         WEATHER MODAL & PLOT CONTROLLER
+         ------------------------------------------------------- */
+      let currentModalStation = null;
+
+      function setWeatherDates(stId, start, end) {
+        const s = document.getElementById(`w-start-${stId}`);
+        const e = document.getElementById(`w-end-${stId}`);
+        if (s && e) {
+          s.value = start;
+          e.value = end;
+        }
+      }
+
+      function setLast30Days(stId) {
+        const end = new Date();
+        const start = new Date();
+        start.setDate(end.getDate() - 30);
+        setWeatherDates(
+          stId,
+          start.toISOString().split("T")[0],
+          end.toISOString().split("T")[0],
+        );
+      }
+
+      function submitWeatherPlot(stId) {
+        const st = STATIONS.find((s) => s.id === stId);
+        if (!st) return;
+        const sVal =
+          document.getElementById(`w-start-${stId}`)?.value || "2025-12-01";
+        const eVal =
+          document.getElementById(`w-end-${stId}`)?.value || "2026-01-31";
+        openWeatherModal(st.id, st.name, st.coords, sVal, eVal);
+      }
+
+      function openWeatherModal(stationId, stationName, coords, start, end) {
+        currentModalStation = {
+          id: stationId,
+          name: stationName,
+          coords: coords,
+        };
+
+        const modal = document.getElementById("weather-modal");
+        const title = document.getElementById("modal-station-title");
+        const sub = document.getElementById("modal-station-sub");
+        const sInput = document.getElementById("modal-start-date");
+        const eInput = document.getElementById("modal-end-date");
+
+        title.innerHTML = `❄️ ${stationName} — Weather Overview`;
+        sub.innerText = `Meteostat Station ID: ${stationId} • Coords: ${coords[0].toFixed(4)}°N, ${coords[1].toFixed(4)}°E`;
+        sInput.value = start;
+        eInput.value = end;
+
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+
+        loadModalPlotImage();
+      }
+
+      function closeWeatherModal() {
+        const modal = document.getElementById("weather-modal");
+        modal.classList.remove("active");
+        document.body.style.overflow = "";
+      }
+
+      function onModalBackdropClick(e) {
+        if (e.target.id === "weather-modal") {
+          closeWeatherModal();
+        }
+      }
+
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeWeatherModal();
+        }
+      });
+
+      function setModalDates(start, end) {
+        document.getElementById("modal-start-date").value = start;
+        document.getElementById("modal-end-date").value = end;
+        loadModalPlotImage();
+      }
+
+      function setModalLast30Days() {
+        const end = new Date();
+        const start = new Date();
+        start.setDate(end.getDate() - 30);
+        setModalDates(
+          start.toISOString().split("T")[0],
+          end.toISOString().split("T")[0],
+        );
+      }
+
+      function refreshModalPlot() {
+        loadModalPlotImage();
+      }
+
+      function loadModalPlotImage() {
+        if (!currentModalStation) return;
+
+        const loader = document.getElementById("modal-loader");
+        const errorBox = document.getElementById("modal-error");
+        const errorMsg = document.getElementById("modal-error-msg");
+        const img = document.getElementById("modal-plot-img");
+        const downloadBtn = document.getElementById("modal-download-btn");
+        const fullBtn = document.getElementById("modal-fullscreen-btn");
+
+        const start = document.getElementById("modal-start-date").value;
+        const end = document.getElementById("modal-end-date").value;
+
+        if (!start || !end) {
+          errorMsg.innerText = "Please select both start and end dates.";
+          errorBox.style.display = "flex";
+          loader.style.display = "none";
+          img.style.display = "none";
+          return;
+        }
+
+        if (start > end) {
+          errorMsg.innerText = "Start date must be before end date.";
+          errorBox.style.display = "flex";
+          loader.style.display = "none";
+          img.style.display = "none";
+          return;
+        }
+
+        loader.style.display = "flex";
+        errorBox.style.display = "none";
+        img.style.display = "none";
+
+        const plotUrl = `/api/plot?station=${encodeURIComponent(currentModalStation.id)}&lat=${currentModalStation.coords[0]}&lon=${currentModalStation.coords[1]}&start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}&name=${encodeURIComponent(currentModalStation.name)}`;
+
+        downloadBtn.href = plotUrl;
+        fullBtn.href = plotUrl;
+
+        // Preload image
+        const newImg = new Image();
+        newImg.onload = () => {
+          img.src = plotUrl;
+          img.style.display = "block";
+          loader.style.display = "none";
+        };
+        newImg.onerror = async () => {
+          loader.style.display = "none";
+          img.style.display = "none";
+          errorBox.style.display = "flex";
+
+          try {
+            const resp = await fetch(plotUrl);
+            const errJson = await resp.json();
+            errorMsg.innerText =
+              errJson.error ||
+              "Failed to generate plot. Please try a different date range.";
+          } catch (e) {
+            errorMsg.innerText =
+              "Could not connect to the weather plot backend. Ensure 'python3 server.py' is running.";
+          }
+        };
+        newImg.src = plotUrl;
+      }
     </script>
   </body>
 </html>

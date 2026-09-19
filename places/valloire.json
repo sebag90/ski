@@ -1,0 +1,26 @@
+{
+  "name": "Valloire",
+  "coords": [
+    45.1656,
+    6.4286
+  ],
+  "total": "525 ~ 585",
+  "note": "Big ski area, price slightly higher",
+  "items": [
+    {
+      "label": "Chalet Le Tetras",
+      "price": "~275",
+      "url": "https://www.gites-de-france-savoie.com/Hebergements/gite/chalet-le-tetras-73G173105.html?&insee=73306"
+    },
+    {
+      "label": "Skipass",
+      "price": "250",
+      "url": "https://www.valloire.net/domaine-skiable/forfaits/"
+    },
+    {
+      "label": "Piste MAP",
+      "price": "",
+      "url": "https://www.valloire.net/domaine-skiable/plan-des-pistes/"
+    }
+  ]
+}

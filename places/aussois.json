@@ -1,0 +1,26 @@
+{
+  "name": "Aussois",
+  "coords": [
+    45.2319,
+    6.7425
+  ],
+  "total": 435,
+  "note": "Sunny south-facing slopes, historical forts",
+  "items": [
+    {
+      "label": "Résidence Les Flocons d'Argent",
+      "price": "~235",
+      "url": "https://www.aussois.com/hebergements/"
+    },
+    {
+      "label": "Skipass",
+      "price": "200",
+      "url": "https://www.aussois.com/forfaits/"
+    },
+    {
+      "label": "Piste MAP",
+      "price": "",
+      "url": "https://www.aussois.com/domaine-skiable/plan-des-pistes/"
+    }
+  ]
+}

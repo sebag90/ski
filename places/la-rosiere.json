@@ -1,0 +1,26 @@
+{
+  "name": "La Rosière",
+  "coords": [
+    45.6272,
+    6.8489
+  ],
+  "total": 540,
+  "note": "Franco-Italian ski area (linked with La Thuile)",
+  "items": [
+    {
+      "label": "Chalet Les Eucherts",
+      "price": "~290",
+      "url": "https://www.larosiere.net/hebergements/"
+    },
+    {
+      "label": "Skipass",
+      "price": "250",
+      "url": "https://www.larosiere.net/forfaits/"
+    },
+    {
+      "label": "Piste MAP",
+      "price": "",
+      "url": "https://www.larosiere.net/en/ski-map/"
+    }
+  ]
+}

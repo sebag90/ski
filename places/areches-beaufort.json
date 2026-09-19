@@ -1,0 +1,26 @@
+{
+  "name": "Arêches-Beaufort",
+  "coords": [
+    45.6886,
+    6.5744
+  ],
+  "total": 448,
+  "note": "Family friendly, great freeride terrain",
+  "items": [
+    {
+      "label": "Gîte Le Grand Mont",
+      "price": "~238",
+      "url": "https://www.gites-de-france-savoie.com/Hebergements/gite/le-grand-mont-73G173128.html?&insee=73034"
+    },
+    {
+      "label": "Skipass",
+      "price": "210",
+      "url": "https://areches-beaufort.com/forfaits/"
+    },
+    {
+      "label": "Piste MAP",
+      "price": "",
+      "url": "https://areches-beaufort.com/domaine-skiable/plan-des-pistes/"
+    }
+  ]
+}

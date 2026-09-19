@@ -1,0 +1,31 @@
+{
+  "name": "Les Karellis",
+  "coords": [
+    45.2059,
+    6.4192
+  ],
+  "total": 441,
+  "note": "No supermarket or boulangerie in the village",
+  "items": [
+    {
+      "label": "Le Lagopede",
+      "price": "~174",
+      "url": "https://www.gites-de-france-savoie.com/Hebergements/gite/le-lagopede-73G173116.html?&insee=73173"
+    },
+    {
+      "label": "Gite de L'ours",
+      "price": "208",
+      "url": "https://www.gites-de-france-savoie.com/Hebergements/gite/le-gite-de-l-ours-73G173117.html?&insee=73173"
+    },
+    {
+      "label": "Skipass",
+      "price": "191",
+      "url": "https://karellis.tickeasy.com/fr-FR/accueil"
+    },
+    {
+      "label": "Piste MAP",
+      "price": "",
+      "url": "https://www.karellis.com/fr/ski-et-montagne/domaine-skiable/plan-des-pistes"
+    }
+  ]
+}

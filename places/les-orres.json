@@ -1,0 +1,36 @@
+{
+  "name": "Les Orres",
+  "coords": [
+    44.4933,
+    6.5558
+  ],
+  "total": "506 ~ 554",
+  "note": "Herrenhaus (bus oder auto) oder residence",
+  "items": [
+    {
+      "label": "La Meleziere (Herrenhaus)",
+      "price": "~315",
+      "url": "https://www.gites-de-france.com/fr/provence-alpes-cote-dazur/hautes-alpes/la-meleziere-les-cimes-05g6516?from=2027-01-16&to=2027-01-23&adults=4&children=0&infants=0"
+    },
+    {
+      "label": "LE CAIRN",
+      "price": "~275",
+      "url": "https://www.locations-les-orres.com/orres+05+appartement+location-vacances+r27215869.html?marche=1&transaction_url=location-vacances&type_url=appartement-studio-loft&sous_type=1"
+    },
+    {
+      "label": "Le Belvedere",
+      "price": "267",
+      "url": "https://reservation.lesorres.com/centre-station-1650/601-le-belvedere-4-pieces-10-personnes-ouest-1bel601.html?&cid=2&action=result&resa_action=result"
+    },
+    {
+      "label": "Skipass",
+      "price": "239",
+      "url": "https://www.lesorres.com/skier-aux-orres/le-domaine-skiable/les-forfaits-de-ski"
+    },
+    {
+      "label": "Piste MAP",
+      "price": "",
+      "url": "https://www.lesorres.com/sites/default/files/documents/plan-des-pistes-les-orres-2025-26-complet-bd.pdf"
+    }
+  ]
+}

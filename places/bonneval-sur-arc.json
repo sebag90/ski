@@ -1,0 +1,26 @@
+{
+  "name": "Bonneval-sur-Arc",
+  "coords": [
+    45.3711,
+    7.0469
+  ],
+  "total": 460,
+  "note": "High elevation, authentic village, high snow guarantee",
+  "items": [
+    {
+      "label": "Chalet L'Albaron",
+      "price": "~260",
+      "url": "https://www.bonneval-sur-arc.com/hebergements/"
+    },
+    {
+      "label": "Skipass",
+      "price": "200",
+      "url": "https://www.bonneval-sur-arc.com/forfaits/"
+    },
+    {
+      "label": "Piste MAP",
+      "price": "",
+      "url": "https://www.bonneval-sur-arc.com/domaine-skiable/plan-des-pistes/"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "La Norma",
+  "coords": [
+    45.2025,
+    6.7028
+  ],
+  "total": 415,
+  "note": "Car-free village, cosy resort",
+  "items": [
+    {
+      "label": "Résidence Les Balcons de La Norma",
+      "price": "~225",
+      "url": "https://www.la-norma.com/hebergements/"
+    },
+    {
+      "label": "Skipass",
+      "price": "190",
+      "url": "https://www.la-norma.com/forfaits/"
+    },
+    {
+      "label": "Piste MAP",
+      "price": "",
+      "url": "https://www.la-norma.com/domaine-skiable/plan-des-pistes/"
+    }
+  ]
+}
