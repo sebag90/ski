@@ -1,31 +1,28 @@
 {
   "name": "Sainte Foy",
-  "coords": [
-    45.5767,
-    6.8942
-  ],
+  "coords": [45.5767, 6.8942],
   "total": "555 ~ 620",
   "note": "Skipass dynamic pricing — budgeting the worst case, 270€. Flat ~1400€ total.",
   "items": [
     {
-      "label": "Chalet Les Charmettes",
-      "price": "~285",
-      "url": "https://www.gites-de-france-savoie.com/Hebergements/gite/chalet-les-charmettes-73G173144.html?&insee=73232"
+      "label": "Chalet Bella Comba – Le Monal",
+      "price": "~350",
+      "url": "https://www.saintefoy-reservation.com/fr/hebergements/chalet-bella-comba-le-monal/"
     },
     {
-      "label": "Le Ruitor",
-      "price": "~350",
-      "url": "https://www.travelski.com/station-ski/sainte-foy-tarentaise/residence-le-ruitor/appartement-4-pieces-6-personnes-confort-espace-71953#origin=Search&theme=LocationSeule&period=20270116%7C20270123&travelers=4%7C0%7C0%7C0"
+      "label": "Appartement Soldanelle",
+      "price": "~315",
+      "url": "https://www.saintefoy-reservation.com/fr/hebergements/soldanelle-appartement-dans-petite-residence/"
     },
     {
       "label": "Skipass",
-      "price": "~270",
-      "url": "https://www.saintefoy-ski.com/forfait-de-ski/"
+      "price": "240 ~ 270",
+      "url": "https://www.saintefoy-tarentaise.com/a-faire/activites-hiver/ski-et-snowboard/forfaits-de-ski/"
     },
     {
-      "label": "Piste MAP",
+      "label": "Piste",
       "price": "",
-      "url": "https://www.saintefoy-ski.com/plan-des-pistes/"
+      "url": "https://woody.cloudly.space/app/uploads/saintefoy-tarentaise/2024/09/thumbs/skimap-1920x1487.webp"
     }
   ]
 }
