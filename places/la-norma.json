@@ -10,17 +10,17 @@
     {
       "label": "Résidence Les Balcons de La Norma",
       "price": "~225",
-      "url": "https://www.la-norma.com/hebergements/"
+      "url": "https://www.la-norma.ski/hebergements/"
     },
     {
       "label": "Skipass",
       "price": "190",
-      "url": "https://www.la-norma.com/forfaits/"
+      "url": "https://www.la-norma.ski/forfaits/"
     },
     {
       "label": "Piste MAP",
       "price": "",
-      "url": "https://www.la-norma.com/domaine-skiable/plan-des-pistes/"
+      "url": "https://www.la-norma.ski/domaine-skiable/plan-des-pistes/"
     }
   ]
 }
