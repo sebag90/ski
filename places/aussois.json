@@ -1,16 +1,13 @@
 {
   "name": "Aussois",
-  "coords": [
-    45.2319,
-    6.7425
-  ],
+  "coords": [45.2319, 6.7425],
   "total": 435,
   "note": "Sunny south-facing slopes, historical forts",
   "items": [
     {
-      "label": "Résidence Les Flocons d'Argent",
+      "label": "le chamois 6 pers",
       "price": "~235",
-      "url": "https://www.aussois.com/hebergements/"
+      "url": "https://www.aussois.com/en/meuble-reservable/le-chamois-6-pers-max/#Localisation"
     },
     {
       "label": "Skipass",
